@@ -104,3 +104,4 @@ C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\zh-Hans\Microsoft.Cod
 C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseService.csproj.AssemblyReference.cache
 C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseSe.9A85A0F5.Up2Date
+C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseService.sourcelink.json
