@@ -46,3 +46,4 @@ C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\refint\SearchService.
 C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\SearchService.pdb
 C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\SearchService.genruntimeconfig.cache
 C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\ref\SearchService.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Data\courses.json
