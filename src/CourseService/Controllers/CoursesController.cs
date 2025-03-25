@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using CourseService.Data;
 using CourseService.DTOs;
 using CourseService.Entities;
@@ -21,14 +22,18 @@ public class CoursesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<CourseDto>>> GetAllCourses()
+    public async Task<ActionResult<List<CourseDto>>> GetAllCourses(string date)
     {
-        var courses = await _context.Courses
-            .Include(x => x.Item)
-            .OrderBy(x => x.Item.CourseTitle)
-            .ToListAsync();
 
-        return _mapper.Map<List<CourseDto>>(courses);
+        var query = _context.Courses.OrderBy(x => x.Item.CourseTitle).AsQueryable();
+
+        if(!string.IsNullOrEmpty(date))
+        {
+            query = query.Where(x => x.LastUpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
+        }
+
+        return await query.ProjectTo<CourseDto>(_mapper.ConfigurationProvider).ToListAsync();
+
     }
 
 

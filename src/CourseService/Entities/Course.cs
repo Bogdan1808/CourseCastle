@@ -10,6 +10,7 @@ public class Course
     public DateTime PostedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
     public Status Status { get; set; }
+    public Ownership Ownership { get; set; } = Ownership.NotOwned;
     public Item Item { get; set; }
 
 }

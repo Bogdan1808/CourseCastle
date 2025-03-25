@@ -16,6 +16,7 @@ public class Item : Entity
     public int Level { get; set; }
     public TimeOnly Duration { get; set; }
     public int CoursePrice { get; set; }
+    public string Ownership { get; set; }
     public float Rating { get; set; }
     public string ImageUrl { get; set; }
 }

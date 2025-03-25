@@ -17,4 +17,6 @@ public class CourseDto
     public int CoursePrice { get; set; }
     public float Rating { get; set; }
     public string ImageUrl { get; set; }
+    public string Ownership { get; set; }
+
 }
