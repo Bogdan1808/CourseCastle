@@ -47,3 +47,14 @@ C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\SearchService.pdb
 C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\SearchService.genruntimeconfig.cache
 C:\Licenta\CourseCastle\src\SearchService\obj\Debug\net8.0\ref\SearchService.dll
 C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Data\courses.json
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Http.Polly.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Polly.dll
+C:\Licenta\CourseCastle\src\SearchService\bin\Debug\net8.0\Polly.Extensions.Http.dll
