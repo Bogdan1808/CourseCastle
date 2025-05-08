@@ -1,0 +1,12 @@
+C:\Licenta\CourseCastle\src\Contracts\bin\Debug\net8.0\Contracts.deps.json
+C:\Licenta\CourseCastle\src\Contracts\bin\Debug\net8.0\Contracts.dll
+C:\Licenta\CourseCastle\src\Contracts\bin\Debug\net8.0\Contracts.pdb
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.AssemblyInfoInputs.cache
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.AssemblyInfo.cs
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.csproj.CoreCompileInputs.cache
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.sourcelink.json
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.dll
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\refint\Contracts.dll
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\Contracts.pdb
+C:\Licenta\CourseCastle\src\Contracts\obj\Debug\net8.0\ref\Contracts.dll

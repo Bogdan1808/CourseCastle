@@ -1,4 +1,5 @@
 using AutoMapper;
+using Contracts;
 using CourseService.DTOs;
 using CourseService.Entities;
 
@@ -13,5 +14,6 @@ public class MappingProfiles : Profile
         CreateMap<CreateCourseDto, Course>()
             .ForMember(d => d.Item, o => o.MapFrom(s => s));
         CreateMap<CreateCourseDto, Item>();
+        CreateMap<CourseDto, CoursePublished>();
     }
 }

@@ -4,14 +4,14 @@
     "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj": {}
   },
   "projects": {
-    "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj": {
+    "C:\\Licenta\\CourseCastle\\src\\Contracts\\Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj",
-        "projectName": "CourseService",
-        "projectPath": "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj",
+        "projectUniqueName": "C:\\Licenta\\CourseCastle\\src\\Contracts\\Contracts.csproj",
+        "projectName": "Contracts",
+        "projectPath": "C:\\Licenta\\CourseCastle\\src\\Contracts\\Contracts.csproj",
         "packagesPath": "C:\\Users\\bnpas\\.nuget\\packages\\",
-        "outputPath": "C:\\Licenta\\CourseCastle\\src\\CourseService\\obj\\",
+        "outputPath": "C:\\Licenta\\CourseCastle\\src\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bnpas\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -42,10 +42,80 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj",
+        "projectName": "CourseService",
+        "projectPath": "C:\\Licenta\\CourseCastle\\src\\CourseService\\CourseService.csproj",
+        "packagesPath": "C:\\Users\\bnpas\\.nuget\\packages\\",
+        "outputPath": "C:\\Licenta\\CourseCastle\\src\\CourseService\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\bnpas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Licenta\\CourseCastle\\src\\Contracts\\Contracts.csproj": {
+                "projectPath": "C:\\Licenta\\CourseCastle\\src\\Contracts\\Contracts.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "MassTransit.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.16, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.0.16, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

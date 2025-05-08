@@ -1,8 +1,10 @@
 using System.Net;
+using MassTransit;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using Polly;
 using Polly.Extensions.Http;
+using SearchService.Consumers;
 using SearchService.Data;
 using SearchService.Models;
 using SearchService.Services;
@@ -13,6 +15,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<CourseServiceHttpClient>().AddPolicyHandler(GetPolicy());
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumersFromNamespaceContaining<CoursePublishedConsumer>();
+
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ReceiveEndpoint("search-course-published", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5, 5));
+
+            e.ConfigureConsumer<CoursePublishedConsumer>(context);
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -32,7 +53,6 @@ app.Lifetime.ApplicationStarted.Register(async () =>
         Console.WriteLine(e);
     }
 });
-
 
 app.Run();
 

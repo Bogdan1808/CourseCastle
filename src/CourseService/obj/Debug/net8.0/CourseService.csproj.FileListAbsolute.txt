@@ -105,3 +105,10 @@ C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\zh-Hant\Microsoft.Cod
 C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseService.csproj.AssemblyReference.cache
 C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseSe.9A85A0F5.Up2Date
 C:\Licenta\CourseCastle\src\CourseService\obj\Debug\net8.0\CourseService.sourcelink.json
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\MassTransit.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\MassTransit.Abstractions.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\MassTransit.RabbitMqTransport.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\RabbitMQ.Client.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\Contracts.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\Contracts.pdb
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\MassTransit.EntityFrameworkCoreIntegration.dll

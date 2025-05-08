@@ -1,8 +1,10 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
 using CourseService.Data;
 using CourseService.DTOs;
 using CourseService.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +16,13 @@ public class CoursesController : ControllerBase
 {
     private readonly CourseDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public CoursesController(CourseDbContext context, IMapper mapper)
+    public CoursesController(CourseDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -58,6 +62,10 @@ public class CoursesController : ControllerBase
         course.Publisher = "test";
 
         _context.Courses.Add(course);
+
+        var newCourse = _mapper.Map<CourseDto>(course);
+
+        await _publishEndpoint.Publish(_mapper.Map<CoursePublished>(newCourse));
 
         var result = await _context.SaveChangesAsync() > 0;
 
