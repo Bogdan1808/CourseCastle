@@ -10,5 +10,7 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<CoursePublished, Item>();
+        CreateMap<CourseUpdated, Item>();
+
     }
 }

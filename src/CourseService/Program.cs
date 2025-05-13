@@ -1,3 +1,4 @@
+using CourseService.Consumers;
 using CourseService.Data;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,10 @@ builder.Services.AddMassTransit(x =>
         o.UsePostgres();
         o.UseBusOutbox();
     });
+
+    x.AddConsumersFromNamespaceContaining<CoursePublishedFaultConsumer>();
+
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("course", false));
 
     x.UsingRabbitMq((context, cfg) =>
     {

@@ -90,6 +90,8 @@ public class CoursesController : ControllerBase
         course.Item.Level = updateCourseDto.Level ?? course.Item.Level;
         course.Item.CoursePrice = updateCourseDto.CoursePrice ?? course.Item.CoursePrice;
 
+        await _publishEndpoint.Publish(_mapper.Map<CourseUpdated>(course));
+
         var result = await _context.SaveChangesAsync() > 0;
 
         if (result) return Ok();
@@ -107,6 +109,8 @@ public class CoursesController : ControllerBase
         //TODO: check seller is == username
 
         _context.Courses.Remove(course);
+
+        await _publishEndpoint.Publish<CourseDeleted>(new {Id = course.Id.ToString()});
 
         var result = await _context.SaveChangesAsync() > 0;
 
