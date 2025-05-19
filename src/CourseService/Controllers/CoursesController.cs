@@ -5,6 +5,7 @@ using CourseService.Data;
 using CourseService.DTOs;
 using CourseService.Entities;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,7 @@ public class CoursesController : ControllerBase
 
         var query = _context.Courses.OrderBy(x => x.Item.CourseTitle).AsQueryable();
 
-        if(!string.IsNullOrEmpty(date))
+        if (!string.IsNullOrEmpty(date))
         {
             query = query.Where(x => x.LastUpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
         }
@@ -54,12 +55,13 @@ public class CoursesController : ControllerBase
 
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<CourseDto>> CreateCourse(CreateCourseDto courseDto)
     {
         var course = _mapper.Map<Course>(courseDto);
-        // TODO : add current user as publisher
-        course.Publisher = "test";
+
+        course.Publisher = User.Identity.Name;
 
         _context.Courses.Add(course);
 
@@ -74,6 +76,7 @@ public class CoursesController : ControllerBase
         return CreatedAtAction(nameof(GetCourseById), new { course.Id }, _mapper.Map<CourseDto>(course));
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateCourse(Guid id, UpdateCourseDto updateCourseDto)
     {
@@ -82,7 +85,10 @@ public class CoursesController : ControllerBase
 
         if (course == null) return NotFound();
 
-        //TODO: check seller == username
+        if (course.Publisher != User.Identity.Name)
+        {
+            return Forbid();
+        }
 
         course.Item.CourseTitle = updateCourseDto.CourseTitle ?? course.Item.CourseTitle;
         course.Item.Instructor = updateCourseDto.Instructor ?? course.Item.Instructor;
@@ -99,22 +105,26 @@ public class CoursesController : ControllerBase
         return BadRequest("Could not save changes");
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteCourse(Guid id)
     {
         var course = await _context.Courses.FindAsync(id);
 
-        if(course == null) return NotFound();
+        if (course == null) return NotFound();
 
-        //TODO: check seller is == username
+        if (course.Publisher != User.Identity.Name)
+        {
+            return Forbid();
+        }
 
         _context.Courses.Remove(course);
 
-        await _publishEndpoint.Publish<CourseDeleted>(new {Id = course.Id.ToString()});
+        await _publishEndpoint.Publish<CourseDeleted>(new { Id = course.Id.ToString() });
 
         var result = await _context.SaveChangesAsync() > 0;
 
-        if(!result) return BadRequest("Could not update DB");
+        if (!result) return BadRequest("Could not update DB");
 
         return Ok();
     }
