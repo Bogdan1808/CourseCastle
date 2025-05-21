@@ -27,7 +27,8 @@ public static class Config
                 AllowedScopes = { "openid", "profile" , "courseApp" },
                 RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
                 ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
-                AllowedGrantTypes = {GrantType.ResourceOwnerPassword }
+                AllowedGrantTypes = {GrantType.ResourceOwnerPassword },
+                AccessTokenLifetime = 3600
             },
             new Client
             {

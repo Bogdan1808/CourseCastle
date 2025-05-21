@@ -13,8 +13,12 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnGet()
     {
-        //Replace with an authorization policy check
-        if (HttpContext.Connection.IsRemote())
+        var localAdresses = new List<string>{ "127.0.0.1", "::1", "::ffff:172.18.0.1" };
+        if(HttpContext.Connection.LocalIpAddress is not null)
+        {
+            localAdresses.Add(HttpContext.Connection.LocalIpAddress.ToString());
+        }
+        if(!localAdresses.Contains(HttpContext.Connection.RemoteIpAddress?.ToString()))
         {
             return NotFound();
         }
