@@ -12,6 +12,7 @@ public class Item : Entity
     public required string CourseTitle { get; set; }
     public required string Instructor { get; set; }
     public required string Description { get; set; }
+    public required string Category { get; set; }
     public DateOnly DateCreated { get; set; }
     public int Level { get; set; }
     public TimeOnly Duration { get; set; }

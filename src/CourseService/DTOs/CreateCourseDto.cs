@@ -17,6 +17,9 @@ public class CreateCourseDto
     public DateOnly? DateCreated { get; set; }
 
     [Required]
+    public string Category { get; set; }
+
+    [Required]
     public int? Level { get; set; }
 
     [Required]

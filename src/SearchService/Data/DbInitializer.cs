@@ -1,6 +1,3 @@
-using System;
-using System.Net.WebSockets;
-using System.Text.Json;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Models;

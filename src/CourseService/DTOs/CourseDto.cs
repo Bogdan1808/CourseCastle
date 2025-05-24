@@ -7,6 +7,7 @@ public class CourseDto
     public int StudentAmmount { get; set; }
     public DateTime PostedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
+    public string Category { get; set; }
     public string Status { get; set; }
     public string CourseTitle { get; set; }
     public string Instructor { get; set; }

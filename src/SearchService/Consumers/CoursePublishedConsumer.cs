@@ -18,6 +18,8 @@ public class CoursePublishedConsumer : IConsumer<CoursePublished>
     {
         Console.WriteLine("-----> Consuming Course Published: " + context.Message.Id);
 
+        Console.WriteLine("Category in message: " + context.Message.Category);
+
         var item = _mapper.Map<Item>(context.Message);
 
         if(item.CourseTitle == "Foo") throw new ArgumentException("Foo is not a valid course title");

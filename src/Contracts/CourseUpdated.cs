@@ -8,4 +8,5 @@ public class CourseUpdated
     public string Description { get; set; }
     public int Level { get; set; }
     public int CoursePrice { get; set; }
+    public int Rating { get; set; }
 }

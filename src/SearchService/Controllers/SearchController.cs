@@ -31,14 +31,39 @@ public class SearchController : ControllerBase
             _ => query.Sort(x => x.Ascending(a => a.LastUpdatedAt))
         };
 
-        query = searchParams.FilterBy switch
+        var filter = searchParams.FilterBy?.ToLower();
+        
+        query = filter switch
         {
             "finished" => query.Match(x => x.Status == "Finished"),
             "started" => query.Match(x => x.Status == "Started"),
-            "notStarted" => query.Match(x => x.Status == "NotStarted"),
+            "notstarted" => query.Match(x => x.Status == "NotStarted"),
             "owned" => query.Match(x => x.Ownership == "Owned"),
             "wishlisted" => query.Match(x => x.Ownership == "Wishlisted"),
-            _ => query.Sort(x => x.Ascending(a => a.LastUpdatedAt))
+            "programming" => query.Match(x => x.Category == "Programming"),
+            "design" => query.Match(x => x.Category == "Design"),
+            "marketing" => query.Match(x => x.Category == "Marketing"),
+            "business" => query.Match(x => x.Category == "Business"),
+            "finance" => query.Match(x => x.Category == "Finance"),
+            "music" => query.Match(x => x.Category == "Music"),
+            "photography" => query.Match(x => x.Category == "Photography"),
+            "health" => query.Match(x => x.Category == "Health"),
+            "language" => query.Match(x => x.Category == "Language"),
+            "science" => query.Match(x => x.Category == "Science"),
+            "education" => query.Match(x => x.Category == "Education"),
+            "software" => query.Match(x => x.Category == "Software"),
+            "lifestyle" => query.Match(x => x.Category == "Lifestyle"),
+            "fitness" => query.Match(x => x.Category == "Fitness"),
+            "art" => query.Match(x => x.Category == "Art"),
+            "cybersecurity" => query.Match(x => x.Category == "Cybersecurity"),
+            "engineering" => query.Match(x => x.Category == "Engineering"),
+            "sales" => query.Match(x => x.Category == "Sales"),
+            "parenting" => query.Match(x => x.Category == "Parenting"),
+            "spirituality" => query.Match(x => x.Category == "Spirituality"),
+            "cooking" => query.Match(x => x.Category == "Cooking"),
+            "gaming" => query.Match(x => x.Category == "Gaming"),
+            "legal" => query.Match(x => x.Category == "Legal"),
+            _ => query
         };
 
         if(!string.IsNullOrEmpty(searchParams.Publisher))
