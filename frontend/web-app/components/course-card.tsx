@@ -16,6 +16,7 @@ export default function CourseCard({ course }: CourseCardProps) {
       <div className="relative h-48 w-full overflow-hidden">
         <CourseThumbnail imageUrl={course.imageUrl} />
         <Badge className="absolute top-3 right-3 bg-amber-600 hover:bg-amber-700 text-white">{course.category}</Badge>
+        <Badge className="absolute bottom-3 left-3 bg-stone-900/80 text-white">{course.duration}</Badge>
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
@@ -37,7 +38,7 @@ export default function CourseCard({ course }: CourseCardProps) {
       <CardFooter className="flex justify-between border-t border-stone-700 pt-4">
         <div className="flex items-center gap-1 text-stone-400 text-sm">
           <Users className="h-4 w-4" />
-          <span>{(course.students ?? 0).toLocaleString()} students</span>
+          <span>{course.students.toLocaleString()} students</span>
         </div>
         <Link href={`/courses/${course.id}`}>
           <Badge className="bg-amber-600 hover:bg-amber-700 cursor-pointer text-white">View Course</Badge>

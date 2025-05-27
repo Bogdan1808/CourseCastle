@@ -1,6 +1,4 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Entities;
 using SearchService.Models;
 using SearchService.RequestHelpers;
@@ -28,6 +26,8 @@ public class SearchController : ControllerBase
         {
             "courseTitle" => query.Sort(x => x.Ascending(a => a.CourseTitle)),
             "new" => query.Sort(x => x.Descending(a => a.DateCreated)),
+            "durationAsc" => query.Sort(x => x.Ascending(a => a.Duration)),
+            "durationDesc" => query.Sort(x => x.Descending(a => a.Duration)),
             _ => query.Sort(x => x.Ascending(a => a.LastUpdatedAt))
         };
 

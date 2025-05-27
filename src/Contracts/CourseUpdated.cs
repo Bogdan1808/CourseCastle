@@ -9,4 +9,5 @@ public class CourseUpdated
     public int Level { get; set; }
     public int CoursePrice { get; set; }
     public int Rating { get; set; }
+    public int Students { get; set; }
 }

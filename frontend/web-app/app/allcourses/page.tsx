@@ -1,30 +1,45 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { Search, Filter } from "lucide-react"
+import { Search, Filter, FunnelX } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CourseCard from "@/components/course-card"
 import { Navbar } from "@/components/navbar"
-import { Course } from "@/types"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from "@/components/ui/pagination";
+import { Course, PagedResult } from "@/types"
 import Filters from "./Filters"
-import { useState } from "react"
-import { getData } from "@/app/allcourses/courseActions"
+import { useEffect, useState } from "react"
+import { getData } from "@/app/actions/courseActions"
+import AppPagination from "@/components/appPagination"
+import { useParamsStore } from "@/hooks/useParamsStore"
+import { useShallow } from "zustand/shallow" 
+import qs from "query-string"
+import SearchBar from "./SearchBar"
+import FilterResetter from "./FilterResetter"
 
-export default async function CoursesPage({ searchParams }: { searchParams: { page?: string, pageSize?: string } }) {
-  const currentPage = Number(searchParams.page) || 1;
-  const pageSize = Number(searchParams.pageSize) || 12;
-  const apiCourses = await getData(currentPage, pageSize);
+export default  function CoursesPage({ searchParams }: { searchParams: { page?: string, pageSize?: string } }) {
+  const [data, setData] = useState<PagedResult<Course>>();
+  const params = useParamsStore(useShallow(state => ({
+    pageNumber: state.pageNumber,
+    pageSize: state.pageSize,
+    searchTerm: state.searchTerm,
+    orderBy: state.orderBy
+  })));
 
-  const totalPages = apiCourses.pageCount;
+  const setParams = useParamsStore(state => state.setParams);
+  const url = qs.stringifyUrl({url: '', query: params}, {skipEmptyString: true});
+
+  function setPageNumber(pageNumber: number) {
+    setParams({ pageNumber });
+  }
+
+  useEffect(() => {
+    getData(url).then((data) => {
+      setData(data);
+    });
+  }, [url]);
 
   return (
       <div className="min-h-screen bg-castle-wall relative">
@@ -42,13 +57,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
             </p>
 
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400" />
-                <Input
-                  placeholder="Search for courses..."
-                  className="pl-10 bg-stone-800/80 border-stone-600 text-white placeholder:text-stone-400 h-12 w-full"
-                />
-              </div>
+              <SearchBar />
               <Select defaultValue="all">
                 <SelectTrigger className="w-full md:w-[180px] bg-stone-800 border-stone-600 text-white h-12">
                   <SelectValue placeholder="Category" />
@@ -76,13 +85,14 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
                 <Filter className="mr-2 h-5 w-5" />
                 Filter
               </Button>
+              <FilterResetter/>
             </div>
           </div>
         </div>
 
         <div className="container mx-auto px-4 py-12">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold text-amber-300 pixel-text">All Courses ({apiCourses.totalCount})</h2>
+            <h2 className="text-2xl font-bold text-amber-300 pixel-text">All Courses ({data?.totalCount})</h2>
             <Select defaultValue="popular">
               <SelectTrigger className="w-[180px] bg-stone-800 border-stone-600 text-white">
                 <SelectValue placeholder="Sort by" />
@@ -96,50 +106,24 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
             </Select>
           </div>
 
+          {/* Filters */}
+          <Filters />
 
           {/* Course Cards */}
-          <Filters pageSize={pageSize} currentPage={currentPage} />
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {apiCourses.result.map((course: Course) => (
+            {data?.result?.map((course: Course) => (
               <CourseCard key={course.id} course={course} />
             ))}
           </div>
-
-          <div className="mt-12 flex justify-center gap-2">
-            <Pagination className="mt-12 ">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href={`?page=${Math.max(1, currentPage - 1)}&pageSize=${pageSize}`}
-                    aria-disabled={currentPage === 1}
-                    className="bg-stone-800 border-2 border-amber-400 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold"
-                  />
-                </PaginationItem>
-                {[...Array(totalPages)].map((_, idx) => (
-                  <PaginationItem key={idx}>
-                    <PaginationLink
-                      href={`?page=${idx + 1}&pageSize=${pageSize}`}
-                      isActive={currentPage === idx + 1}
-                      className={`bg-stone-800 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold border-2
-                        ${currentPage === idx + 1
-                          ? "border-amber-400"
-                          : "border-white"
-                        }`}
-                    >
-                      {idx + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationNext
-                    href={`?page=${Math.min(totalPages, currentPage + 1)}&pageSize=${pageSize}`}
-                    aria-disabled={currentPage === totalPages}
-                    className="bg-stone-800 border-2 border-amber-400 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold"
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+          {/* Pagination */}
+          <div className="flex justify-center mt-4">
+            {data && (
+              <AppPagination
+                pageChanged={setPageNumber}
+                currentPage={params.pageNumber}
+                pageCount={data.pageCount}
+              />
+            )}
           </div>
         </div>
 

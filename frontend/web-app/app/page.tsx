@@ -32,8 +32,8 @@ async function getData() {
 }
 
 export default async function Home() {
-  const apiCourses = await getData();
-  const featuredCourses = apiCourses.result
+  const data = await getData();
+  const featuredCourses = data.result
     .sort((a: Course, b: Course) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 3);
 
