@@ -4,7 +4,7 @@ public class CourseDto
 {
     public Guid Id { get; set; }
     public string Publisher { get; set; }
-    public int StudentAmmount { get; set; }
+    public int Students { get; set; }
     public DateTime PostedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
     public string Category { get; set; }

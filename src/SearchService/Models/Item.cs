@@ -5,7 +5,7 @@ namespace SearchService.Models;
 public class Item : Entity
 {
     public required string  Publisher { get; set; }
-    public int StudentAmmount { get; set; }
+    public int Students { get; set; }
     public DateTime PostedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
     public required string Status { get; set; }

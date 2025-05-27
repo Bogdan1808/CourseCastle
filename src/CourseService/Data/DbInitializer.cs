@@ -33,7 +33,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Owned,
-                StudentAmmount = 1200,
+                Students = 1200,
                 Item = new Item
                 {
                     CourseTitle = "Introduction to Machine Learning",
@@ -56,7 +56,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.NotOwned,
-                StudentAmmount = 900,
+                Students = 900,
                 Item = new Item
                 {
                     CourseTitle = "Fundamentals of Graphic Design",
@@ -79,7 +79,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Wishlisted,
-                StudentAmmount = 500,
+                Students = 500,
                 Item = new Item
                 {
                     CourseTitle = "Startup Business Essentials",
@@ -102,7 +102,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Owned,
-                StudentAmmount = 3000,
+                Students = 3000,
                 Item = new Item
                 {
                     CourseTitle = "Yoga for Beginners",
@@ -125,7 +125,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.NotOwned,
-                StudentAmmount = 1500,
+                Students = 1500,
                 Item = new Item
                 {
                     CourseTitle = "Digital Photography Mastery",
@@ -148,7 +148,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Wishlisted,
-                StudentAmmount = 2100,
+                Students = 2100,
                 Item = new Item
                 {
                     CourseTitle = "Web Development Bootcamp",
@@ -171,7 +171,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Owned,
-                StudentAmmount = 750,
+                Students = 750,
                 Item = new Item
                 {
                     CourseTitle = "Mindfulness & Meditation",
@@ -194,7 +194,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.NotOwned,
-                StudentAmmount = 3200,
+                Students = 3200,
                 Item = new Item
                 {
                     CourseTitle = "Mastering Italian Cooking",
@@ -217,7 +217,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Wishlisted,
-                StudentAmmount = 650,
+                Students = 650,
                 Item = new Item
                 {
                     CourseTitle = "Personal Finance 101",
@@ -240,7 +240,7 @@ public class DbInitializer
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
                 Ownership = Ownership.Owned,
-                StudentAmmount = 1900,
+                Students = 1900,
                 Item = new Item
                 {
                     CourseTitle = "Cybersecurity Fundamentals",

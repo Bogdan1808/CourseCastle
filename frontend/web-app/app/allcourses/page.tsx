@@ -15,27 +15,14 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination";
+import Filters from "./Filters"
+import { useState } from "react"
+import { getData } from "@/app/allcourses/courseActions"
 
-async function getData(page = 1) {
-  const res = await fetch(`http://localhost:6001/search?PageSize=12&PageNumber=${page}`);
-  if (!res.ok) throw new Error("Failed to fetch courses");
-  return res.json();
-}
-
-export default async function CoursesPage({ searchParams }: { searchParams: { page?: string } }) {
+export default async function CoursesPage({ searchParams }: { searchParams: { page?: string, pageSize?: string } }) {
   const currentPage = Number(searchParams.page) || 1;
-  const apiCourses = await getData(currentPage);
-
-  const courses: Course[] = apiCourses.result.map((course: any) => ({
-    id: course.id,
-    courseTitle: course.courseTitle,
-    instructor: course.instructor,
-    level: course.level,
-    rating: course.rating,
-    students: course.studentAmmount,
-    imageUrl: course.imageUrl,
-    category: course.category,
-  }));
+  const pageSize = Number(searchParams.pageSize) || 12;
+  const apiCourses = await getData(currentPage, pageSize);
 
   const totalPages = apiCourses.pageCount;
 
@@ -109,8 +96,12 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
             </Select>
           </div>
 
+
+          {/* Course Cards */}
+          <Filters pageSize={pageSize} currentPage={currentPage} />
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course) => (
+            {apiCourses.result.map((course: Course) => (
               <CourseCard key={course.id} course={course} />
             ))}
           </div>
@@ -120,7 +111,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    href={`?page=${Math.max(1, currentPage - 1)}`}
+                    href={`?page=${Math.max(1, currentPage - 1)}&pageSize=${pageSize}`}
                     aria-disabled={currentPage === 1}
                     className="bg-stone-800 border-2 border-amber-400 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold"
                   />
@@ -128,7 +119,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
                 {[...Array(totalPages)].map((_, idx) => (
                   <PaginationItem key={idx}>
                     <PaginationLink
-                      href={`?page=${idx + 1}`}
+                      href={`?page=${idx + 1}&pageSize=${pageSize}`}
                       isActive={currentPage === idx + 1}
                       className={`bg-stone-800 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold border-2
                         ${currentPage === idx + 1
@@ -142,7 +133,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: { pa
                 ))}
                 <PaginationItem>
                   <PaginationNext
-                    href={`?page=${Math.min(totalPages, currentPage + 1)}`}
+                    href={`?page=${Math.min(totalPages, currentPage + 1)}&pageSize=${pageSize}`}
                     aria-disabled={currentPage === totalPages}
                     className="bg-stone-800 border-2 border-amber-400 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold"
                   />

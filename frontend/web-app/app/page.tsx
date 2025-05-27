@@ -32,22 +32,9 @@ async function getData() {
 }
 
 export default async function Home() {
-
   const apiCourses = await getData();
-
-  const courses: Course[] = apiCourses.result.map((course: any) => ({
-    id: course.id,
-    courseTitle: course.courseTitle,
-    instructor: course.instructor,
-    level: course.level,
-    rating: course.rating,
-    students: course.studentAmmount,
-    imageUrl: course.imageUrl,
-    category: course.category,
-  }));
-
-  const featuredCourses = [...courses]
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+  const featuredCourses = apiCourses.result
+    .sort((a: Course, b: Course) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 3);
 
   return (
@@ -204,7 +191,7 @@ export default async function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredCourses.map((course) => (
+              {featuredCourses.map((course: Course) => (
                 <CourseCard key={course.id} course={course} />
               ))}
             </div>
