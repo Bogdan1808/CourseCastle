@@ -13,7 +13,7 @@ public class CourseDto
     public string Instructor { get; set; }
     public string Description { get; set; }
     public DateOnly DateCreated { get; set; }
-    public int Level { get; set; }
+    public string Level { get; set; }
     public TimeOnly Duration { get; set; }
     public int CoursePrice { get; set; }
     public float Rating { get; set; }

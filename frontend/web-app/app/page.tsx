@@ -231,7 +231,7 @@ export default async function Home() {
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-20 bg-stone-900/60 backdrop-blur-sm">
+        {/* <section className="py-20 bg-stone-900/60 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold mb-4 text-amber-300 pixel-text">Tales from Our Students</h2>
@@ -293,7 +293,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Featured Instructors */}
         <section className="py-20 bg-stone-900/70 backdrop-blur-sm border-y border-stone-700">
           <div className="container mx-auto px-4">
             <div className="mb-12 text-center">
@@ -386,7 +385,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Achievement Badges Section */}
         <section className="py-16 bg-stone-900/50 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="mb-10 text-center">
@@ -417,7 +415,7 @@ export default async function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* FAQ Section */}
         <section className="py-20 bg-stone-900/60 backdrop-blur-sm border-y border-stone-700">

@@ -11,7 +11,7 @@ public class Item
     public string Description { get; set; }
     public DateOnly DateCreated { get; set; }
     public Category Category { get; set; }
-    public int Level { get; set; }
+    public Level Level { get; set; }
     public TimeOnly Duration { get; set; }
     public int CoursePrice { get; set; }
     public float Rating { get; set; }

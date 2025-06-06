@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
 using SearchService.Models;
 using SearchService.RequestHelpers;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace SearchService.Controllers;
 
@@ -14,32 +16,30 @@ public class SearchController : ControllerBase
     public async Task<ActionResult<List<Item>>>SearchItems([FromQuery]SearchParams searchParams)
     {
         var query = DB.PagedSearch<Item, Item>();
-
-        query.Sort(x => x.Ascending(a => a.CourseTitle));
         
-        if(!string.IsNullOrEmpty(searchParams.SearchTerm))
+        if (!string.IsNullOrEmpty(searchParams.SearchTerm))
         {
-            query.Match(Search.Full, searchParams.SearchTerm).SortByTextScore();
+            var regex = new BsonRegularExpression(searchParams.SearchTerm, "i");
+            var regexFilter = Builders<Item>.Filter.Regex(x => x.CourseTitle, regex);
+
+            query.Match(regexFilter);
         }
 
-        query = searchParams.OrderBy switch
+        var order = searchParams.OrderBy?.Trim().ToLower();
+
+        query = order switch
         {
-            "courseTitle" => query.Sort(x => x.Ascending(a => a.CourseTitle)),
+            "coursetitle" => query.Sort(x => x.Ascending(a => a.CourseTitle)),
             "new" => query.Sort(x => x.Descending(a => a.DateCreated)),
-            "durationAsc" => query.Sort(x => x.Ascending(a => a.Duration)),
-            "durationDesc" => query.Sort(x => x.Descending(a => a.Duration)),
-            _ => query.Sort(x => x.Ascending(a => a.LastUpdatedAt))
+            "durationasc" => query.Sort(x => x.Ascending(a => a.Duration)),
+            "durationdesc" => query.Sort(x => x.Descending(a => a.Duration)),
+            _ => query.Sort(x => x.Ascending(a => a.CourseTitle))
         };
 
         var filter = searchParams.FilterBy?.ToLower();
         
         query = filter switch
         {
-            "finished" => query.Match(x => x.Status == "Finished"),
-            "started" => query.Match(x => x.Status == "Started"),
-            "notstarted" => query.Match(x => x.Status == "NotStarted"),
-            "owned" => query.Match(x => x.Ownership == "Owned"),
-            "wishlisted" => query.Match(x => x.Ownership == "Wishlisted"),
             "programming" => query.Match(x => x.Category == "Programming"),
             "design" => query.Match(x => x.Category == "Design"),
             "marketing" => query.Match(x => x.Category == "Marketing"),
@@ -65,8 +65,32 @@ public class SearchController : ControllerBase
             "legal" => query.Match(x => x.Category == "Legal"),
             _ => query
         };
+        
+        var filteredLevel = searchParams.LevelFilter?.ToLower();
 
-        if(!string.IsNullOrEmpty(searchParams.Publisher))
+        query = filteredLevel switch
+        {
+            "beginner" => query.Match(x => x.Level == "Beginner"),
+            "apprentice" => query.Match(x => x.Level == "Apprentice"),
+            "intermediate" => query.Match(x => x.Level == "Intermediate"),
+            "master" => query.Match(x => x.Level == "Master"),
+            "expert" => query.Match(x => x.Level == "Expert"),
+            _ => query
+        };
+
+        var filteredStatus = searchParams.StatusFilter?.ToLower();
+
+        query = filteredStatus switch
+        {
+            "finished" => query.Match(x => x.Status == "Finished"),
+            "started" => query.Match(x => x.Status == "Started"),
+            "notstarted" => query.Match(x => x.Status == "NotStarted"),
+            "owned" => query.Match(x => x.Ownership == "Owned"),
+            "wishlisted" => query.Match(x => x.Ownership == "Wishlisted"),
+            _ => query
+        };
+
+        if (!string.IsNullOrEmpty(searchParams.Publisher))
         {
             query.Match(x => x.Publisher == searchParams.Publisher);
         }

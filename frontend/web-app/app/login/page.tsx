@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-castle-wall flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/50"></div>
       <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/90 to-transparent"></div>
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/90 to-transparent"></div>
 
@@ -33,7 +33,7 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <div className="relative z-10 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="relative z-10 mt-4 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-stone-900/95 py-8 px-4 shadow-2xl sm:rounded-lg sm:px-10 border-2 border-stone-700/50 card-medieval backdrop-blur-sm">
           <div className="space-y-6">
             <div>

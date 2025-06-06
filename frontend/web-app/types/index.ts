@@ -16,7 +16,7 @@ export type Course = {
   description?: string
   category: string
   dateCreated: string
-  level: number
+  level: string
   duration: string
   coursePrice: number
   ownership: string

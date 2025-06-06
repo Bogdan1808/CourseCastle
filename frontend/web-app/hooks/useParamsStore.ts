@@ -6,6 +6,8 @@ type State = {
     pageCount: number;
     searchTerm: string;
     orderBy: string;
+    filterBy: string;
+    levelFilter: string;
 }
 
 type Actions = {
@@ -18,7 +20,9 @@ const initialState: State = {
     pageSize: 12,
     pageCount: 1,
     searchTerm: '',
-    orderBy:'courseTitle'
+    orderBy:'courseTitle',
+    filterBy: '',
+    levelFilter:''
 }
 
 export const useParamsStore = create<State & Actions>((set)=> ({

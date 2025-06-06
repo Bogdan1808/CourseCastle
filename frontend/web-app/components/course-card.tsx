@@ -27,7 +27,7 @@ export default function CourseCard({ course }: CourseCardProps) {
       <CardContent className="pb-2">
         <div className="flex items-center justify-between">
           <Badge variant="outline" className="bg-stone-700/50 text-amber-100 border-stone-600 hover:bg-stone-600">
-            Difficulty Level: {course.level}/5
+            Difficulty Level: {course.level}
           </Badge>
           <div className="flex items-center gap-1 text-amber-500">
             <Star className="fill-amber-500 h-4 w-4" />

@@ -14,7 +14,7 @@ public class Item : Entity
     public required string Description { get; set; }
     public required string Category { get; set; }
     public DateOnly DateCreated { get; set; }
-    public int Level { get; set; }
+    public string Level { get; set; }
     public TimeOnly Duration { get; set; }
     public int CoursePrice { get; set; }
     public required string Ownership { get; set; }

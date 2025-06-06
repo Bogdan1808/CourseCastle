@@ -93,7 +93,6 @@ public class CoursesController : ControllerBase
         course.Item.CourseTitle = updateCourseDto.CourseTitle ?? course.Item.CourseTitle;
         course.Item.Instructor = updateCourseDto.Instructor ?? course.Item.Instructor;
         course.Item.Description = updateCourseDto.Description ?? course.Item.Description;
-        course.Item.Level = updateCourseDto.Level ?? course.Item.Level;
         course.Item.CoursePrice = updateCourseDto.CoursePrice ?? course.Item.CoursePrice;
 
         await _publishEndpoint.Publish(_mapper.Map<CourseUpdated>(course));

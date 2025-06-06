@@ -1,12 +1,15 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import LoginButton from "./LoginButton"
+import { getCurrentUser } from "@/app/actions/authActions"
+import UserActions from "./UserActions"
 
 interface NavbarProps {
   activePage?: "home" | "courses" | "instructors" | "about" | "login" | "signup"
 }
 
-export function Navbar({ activePage }: NavbarProps) {
+export async function Navbar({ activePage }: NavbarProps) {
+  const user = await getCurrentUser();
   return (
     <header className="border-b bg-stone-900/80 text-white backdrop-blur-sm border-stone-700 relative z-10">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
@@ -54,19 +57,15 @@ export function Navbar({ activePage }: NavbarProps) {
             About
           </Link>
         </nav>
-        <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button
-              variant="outline"
-              className="bg-stone-800 border-amber-400 text-amber-300 hover:bg-amber-400 hover:text-stone-900 font-semibold"
-            >
-              Login
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <Button className="btn-medieval">Sign Up</Button>
-          </Link>
-        </div>
+
+        {user ? (
+          <UserActions user={user}/>
+        ) : (
+          <div className="flex items-center gap-4">
+            <LoginButton/>
+          </div>
+        )}
+
       </div>
     </header>
   )

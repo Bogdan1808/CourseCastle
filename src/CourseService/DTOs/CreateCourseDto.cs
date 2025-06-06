@@ -20,7 +20,7 @@ public class CreateCourseDto
     public string Category { get; set; }
 
     [Required]
-    public int? Level { get; set; }
+    public string Level { get; set; }
 
     [Required]
     public TimeOnly? Duration { get; set; }
