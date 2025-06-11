@@ -9,8 +9,8 @@ public class Course
     public int? Students { get; set; }
     public DateTime PostedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
-    public Status Status { get; set; }
-    public Ownership Ownership { get; set; } = Ownership.NotOwned;
     public Item Item { get; set; }
+
+    public ICollection<UserCourse> UserCourses { get; set; }
 
 }

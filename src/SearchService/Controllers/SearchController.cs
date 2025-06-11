@@ -78,18 +78,6 @@ public class SearchController : ControllerBase
             _ => query
         };
 
-        var filteredStatus = searchParams.StatusFilter?.ToLower();
-
-        query = filteredStatus switch
-        {
-            "finished" => query.Match(x => x.Status == "Finished"),
-            "started" => query.Match(x => x.Status == "Started"),
-            "notstarted" => query.Match(x => x.Status == "NotStarted"),
-            "owned" => query.Match(x => x.Ownership == "Owned"),
-            "wishlisted" => query.Match(x => x.Ownership == "Wishlisted"),
-            _ => query
-        };
-
         if (!string.IsNullOrEmpty(searchParams.Publisher))
         {
             query.Match(x => x.Publisher == searchParams.Publisher);

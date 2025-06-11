@@ -28,11 +28,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.Parse("70d0db11-e855-4dff-bdc4-dad63bf9fcba"),
-                Status = Status.Finished,
                 Publisher = "bob",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Owned,
                 Students = 1200,
                 Item = new Item
                 {
@@ -51,11 +49,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Started,
                 Publisher = "Creative Academy",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.NotOwned,
                 Students = 900,
                 Item = new Item
                 {
@@ -74,11 +70,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.NotStarted,
                 Publisher = "Business Hub",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Wishlisted,
                 Students = 500,
                 Item = new Item
                 {
@@ -97,11 +91,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Finished,
                 Publisher = "Health Institute",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Owned,
                 Students = 3000,
                 Item = new Item
                 {
@@ -120,11 +112,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.NotStarted,
                 Publisher = "Photographers Guild",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.NotOwned,
                 Students = 1500,
                 Item = new Item
                 {
@@ -143,11 +133,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Started,
                 Publisher = "CodeCamp",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Wishlisted,
                 Students = 2100,
                 Item = new Item
                 {
@@ -166,11 +154,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Finished,
                 Publisher = "Mindful Life",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Owned,
                 Students = 750,
                 Item = new Item
                 {
@@ -189,11 +175,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Started,
                 Publisher = "Kitchen Pro",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.NotOwned,
                 Students = 3200,
                 Item = new Item
                 {
@@ -212,11 +196,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.NotStarted,
                 Publisher = "Finance School",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Wishlisted,
                 Students = 650,
                 Item = new Item
                 {
@@ -235,11 +217,9 @@ public class DbInitializer
             new Course
             {
                 Id = Guid.NewGuid(),
-                Status = Status.Finished,
                 Publisher = "CodeGuard",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Ownership = Ownership.Owned,
                 Students = 1900,
                 Item = new Item
                 {

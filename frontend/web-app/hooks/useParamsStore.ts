@@ -8,6 +8,8 @@ type State = {
     orderBy: string;
     filterBy: string;
     levelFilter: string;
+    publisher?: string; 
+    buyer?: string;
 }
 
 type Actions = {
@@ -22,7 +24,9 @@ const initialState: State = {
     searchTerm: '',
     orderBy:'courseTitle',
     filterBy: '',
-    levelFilter:''
+    levelFilter:'',
+    publisher: undefined,
+    buyer: undefined
 }
 
 export const useParamsStore = create<State & Actions>((set)=> ({

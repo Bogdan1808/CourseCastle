@@ -2,18 +2,14 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Search, Filter, FunnelX } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import CourseCard from "@/components/course-card"
-import { Navbar } from "@/components/navbar"
 import { Course, PagedResult } from "@/types"
 import Filters from "./Filters"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { getData } from "@/app/actions/courseActions"
 import AppPagination from "@/components/appPagination"
 import { useParamsStore } from "@/hooks/useParamsStore"
+import { useSearchParams } from 'next/navigation'
 import { useShallow } from "zustand/shallow" 
 import ClientNavbar from "@/components/ClientNavbar"
 import qs from "query-string"
@@ -25,17 +21,33 @@ import EmptyFilter from "@/components/EmptyFilter"
 
 export default  function CoursesPage({ searchParams }: { searchParams: { page?: string, pageSize?: string } }) {
   const [data, setData] = useState<PagedResult<Course>>();
+  const urlSearchParams = useSearchParams()
+  const isInitialLoad = useRef(true)
   const params = useParamsStore(useShallow(state => ({
     pageNumber: state.pageNumber,
     pageSize: state.pageSize,
     searchTerm: state.searchTerm,
     orderBy: state.orderBy,
     filterBy: state.filterBy,
-    levelFilter: state.levelFilter
+    levelFilter: state.levelFilter,
+    publisher: state.publisher,
+    buyer: state.buyer
   })));
 
   const setParams = useParamsStore(state => state.setParams);
   const url = qs.stringifyUrl({url: '', query: params}, {skipEmptyString: true});
+
+useEffect(() => {
+  const searchTerm = urlSearchParams.get('searchTerm')
+  
+  if (isInitialLoad.current) {
+    setParams({ searchTerm: searchTerm || '' })
+    isInitialLoad.current = false
+  } else if (!searchTerm) {
+    setParams({ searchTerm: '' })
+  }
+}, [urlSearchParams, setParams])
+
 
   function setPageNumber(pageNumber: number) {
     setParams({ pageNumber });
@@ -49,7 +61,7 @@ export default  function CoursesPage({ searchParams }: { searchParams: { page?: 
 
   return (
       <div className="min-h-screen bg-castle-wall relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
         <div className="relative z-10">
 
         {/* Header/Navigation Bar */}
@@ -191,3 +203,4 @@ export default  function CoursesPage({ searchParams }: { searchParams: { page?: 
     </div>
   )
 }
+

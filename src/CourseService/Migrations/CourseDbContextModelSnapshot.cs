@@ -31,17 +31,11 @@ namespace CourseService.Migrations
                     b.Property<DateTime>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Ownership")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("PostedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Publisher")
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("Students")
                         .HasColumnType("integer");
@@ -96,6 +90,31 @@ namespace CourseService.Migrations
                         .IsUnique();
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("CourseService.Entities.UserCourse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Ownership")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("UserCourses");
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.InboxState", b =>
@@ -275,9 +294,22 @@ namespace CourseService.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("CourseService.Entities.UserCourse", b =>
+                {
+                    b.HasOne("CourseService.Entities.Course", "Course")
+                        .WithMany("UserCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("CourseService.Entities.Course", b =>
                 {
                     b.Navigation("Item");
+
+                    b.Navigation("UserCourses");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,8 @@ using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+
 
 namespace CourseService.Controllers;
 
@@ -128,4 +130,123 @@ public class CoursesController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
+    [HttpGet("owned")]
+    public async Task<ActionResult<List<CourseDto>>> GetOwnedCourses()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var query = _context.Courses
+            .Include(c => c.UserCourses)
+            .Where(c => c.UserCourses.Any(uc => uc.UserId == userId && uc.Ownership == Ownership.Owned))
+            .OrderBy(x => x.Item.CourseTitle);
+
+        return await query.ProjectTo<CourseDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    [Authorize]
+    [HttpGet("wishlist")]
+    public async Task<ActionResult<List<CourseDto>>> GetWishlistedCourses()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var query = _context.Courses
+            .Include(c => c.UserCourses)
+            .Where(c => c.UserCourses.Any(uc => uc.UserId == userId && uc.Ownership == Ownership.Wishlisted))
+            .OrderBy(x => x.Item.CourseTitle);
+
+        return await query.ProjectTo<CourseDto>(_mapper.ConfigurationProvider).ToListAsync();
+    }
+
+    [Authorize]
+    [HttpPost("wishlist/{id}")]
+    public async Task<ActionResult> WishlistCourse(Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var existingUserCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id);
+
+        if (existingUserCourse != null)
+        {
+            if (existingUserCourse.Ownership == Ownership.Owned)
+            {
+                return BadRequest("You already own this course");
+            }
+
+            if (existingUserCourse.Ownership == Ownership.Wishlisted)
+            {
+                return BadRequest("Course is already in your wishlist");
+            }
+        }
+
+        var userCourse = new UserCourse
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            CourseId = id,
+            Ownership = Ownership.Wishlisted,
+            Status = Status.NotStarted
+        };
+
+        _context.UserCourses.Add(userCourse);
+        await _context.SaveChangesAsync();
+
+        return Ok("Course added to wishlist");
+    }
+
+    [Authorize]
+    [HttpGet("usercoursestatus/{id}")]
+    public async Task<ActionResult<UserCourseStatusDto>> GetUserCourseStatus(Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var userCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id);
+
+        if (userCourse == null)
+        {
+            return NotFound("No relationship found between user and course");
+        }
+
+        var result = new UserCourseStatusDto
+        {
+            CourseId = userCourse.CourseId,
+            UserId = userCourse.UserId,
+            Ownership = userCourse.Ownership.ToString(),
+            Status = userCourse.Status.ToString()
+        };
+
+        return Ok(result);
+    }
+    
+    [Authorize]
+    [HttpDelete("wishlist/{id}")]
+    public async Task<ActionResult> RemoveFromWishlist(Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var existingUserCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id);
+
+        if (existingUserCourse == null)
+        {
+            return BadRequest("Course is not in your list");
+        }
+
+        if (existingUserCourse.Ownership == Ownership.Owned)
+        {
+            return BadRequest("Cannot remove owned course from your library");
+        }
+
+        if (existingUserCourse.Ownership != Ownership.Wishlisted)
+        {
+            return BadRequest("Course is not in your wishlist");
+        }
+
+        _context.UserCourses.Remove(existingUserCourse);
+        await _context.SaveChangesAsync();
+
+        return Ok("Course removed from wishlist");
+    }
 }

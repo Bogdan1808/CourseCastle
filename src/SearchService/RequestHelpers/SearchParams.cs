@@ -11,6 +11,5 @@ public class SearchParams
     public string? OrderBy { get; set; }
     public string? FilterBy { get; set; }
     public string? LevelFilter { get; set; }
-    public string? StatusFilter { get; set; }
     public string? Category { get; set; }
 }

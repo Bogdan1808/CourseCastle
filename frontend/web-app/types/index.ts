@@ -10,7 +10,6 @@ export type Course = {
   students: number
   postedAt: string
   lastUpdatedAt: string
-  status: string
   courseTitle: string
   instructor: string
   description?: string
@@ -19,7 +18,6 @@ export type Course = {
   level: string
   duration: string
   coursePrice: number
-  ownership: string
   rating?: number
   imageUrl: string
 }

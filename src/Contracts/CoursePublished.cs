@@ -7,7 +7,6 @@ public class CoursePublished
     public int Students { get; set; }
     public DateTime PostedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
-    public string Status { get; set; }
     public string Category { get; set; }
     public string CourseTitle { get; set; }
     public string Instructor { get; set; }
@@ -18,5 +17,4 @@ public class CoursePublished
     public int CoursePrice { get; set; }
     public float Rating { get; set; }
     public string ImageUrl { get; set; }
-    public string Ownership { get; set; }
 }

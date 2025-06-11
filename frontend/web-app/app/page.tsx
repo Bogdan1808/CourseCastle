@@ -9,12 +9,8 @@ import {
   Award,
   Users,
   Star,
-  ScrollText,
   GraduationCap,
   MapPin,
-  MessageSquareQuote,
-  Sparkles,
-  Trophy,
   Shield,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -23,6 +19,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import CourseCard from "@/components/course-card"
 import { Navbar } from "@/components/navbar"
 import { Course } from "@/types"
+import HeroSearchForm from "./HeroSearchForm"
 
 
 async function getData() {
@@ -44,7 +41,7 @@ export default async function Home() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-28 relative text-white">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
           <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/70 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/70 to-transparent"></div>
           <div className="container relative mx-auto px-4">
@@ -56,16 +53,7 @@ export default async function Home() {
                 <p className="text-xl text-stone-200">
                   Discover courses crafted by the realm's finest instructors and forge your path to mastery.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400" />
-                    <Input
-                      placeholder="Search for courses..."
-                      className="pl-10 bg-stone-800/80 border-stone-600 text-white placeholder:text-stone-400 h-12 w-full"
-                    />
-                  </div>
-                  <Button className="btn-medieval h-12 px-6">Explore Courses</Button>
-                </div>
+                <HeroSearchForm />
               </div>
               <div className="md:w-1/2 relative">
                 <div className="image-frame inline-block relative">

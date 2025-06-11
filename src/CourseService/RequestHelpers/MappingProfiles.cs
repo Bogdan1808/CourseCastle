@@ -17,5 +17,6 @@ public class MappingProfiles : Profile
         CreateMap<CourseDto, CoursePublished>();
         CreateMap<Course, CourseUpdated>().IncludeMembers(a => a.Item);
         CreateMap<Item, CourseUpdated>();
+        CreateMap<UserCourse, UserCourseDto>();
     }
 }

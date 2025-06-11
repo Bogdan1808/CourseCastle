@@ -36,3 +36,42 @@ C:\Licenta\CourseCastle\src\GatewayService\obj\Debug\net8.0\refint\GatewayServic
 C:\Licenta\CourseCastle\src\GatewayService\obj\Debug\net8.0\GatewayService.pdb
 C:\Licenta\CourseCastle\src\GatewayService\obj\Debug\net8.0\GatewayService.genruntimeconfig.cache
 C:\Licenta\CourseCastle\src\GatewayService\obj\Debug\net8.0\ref\GatewayService.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\appsettings.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\appsettings.Docker.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\GatewayService.exe
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\GatewayService.deps.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\GatewayService.runtimeconfig.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\GatewayService.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\GatewayService.pdb
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\System.IO.Hashing.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\bin\Debug\net8.0\Yarp.ReverseProxy.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.csproj.AssemblyReference.cache
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.AssemblyInfoInputs.cache
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.AssemblyInfo.cs
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.csproj.CoreCompileInputs.cache
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets\msbuild.GatewayService.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets\msbuild.build.GatewayService.props
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.GatewayService.props
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.GatewayService.props
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\scopedcss\bundle\GatewayService.styles.css
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayS.B2235537.Up2Date
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\refint\GatewayService.dll
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.pdb
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\GatewayService.genruntimeconfig.cache
+C:\Users\bnpas\Desktop\CC backend vechi\src\GatewayService\obj\Debug\net8.0\ref\GatewayService.dll
+C:\Licenta\CourseCastle\src\GatewayService\bin\Debug\net8.0\appsettings.Docker.json

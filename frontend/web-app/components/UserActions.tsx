@@ -3,16 +3,36 @@
 import { Button, Dropdown, DropdownDivider, DropdownItem } from 'flowbite-react'
 import Link from 'next/link'
 import { User } from 'next-auth'
-import { HiCog, HiDocumentArrowUp, HiUser } from 'react-icons/hi2'
-import React from 'react'
+import { HiClipboardDocumentList, HiCog, HiDocumentArrowUp, HiUser } from 'react-icons/hi2'
+import React, { use } from 'react'
 import { AiOutlineLogout } from 'react-icons/ai'
 import { signOut } from 'next-auth/react'
+import { useParamsStore } from '@/hooks/useParamsStore'
+import { usePathname, useRouter } from 'next/navigation'
 
 type Props = {
   user: User
 }
 
 export default function UserActions({ user }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const setParams = useParamsStore(state => state.setParams);
+
+  function setBuyer(){
+    setParams({buyer: user.username, publisher: undefined});
+    if(pathname !== '/courses'){
+      router.push('/courses');
+    }
+  }
+
+  function setPublisher(){
+    setParams({publisher: user.username, buyer: undefined});
+      if(pathname !== '/courses'){
+      router.push('/courses');
+    }
+  }
+
   return (
     <Dropdown 
       inline 
@@ -34,14 +54,24 @@ export default function UserActions({ user }: Props) {
       <DropdownItem 
         icon={HiUser}
         className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
+        onClick={setBuyer}
       >
         My profile
+      </DropdownItem>
+      <DropdownItem 
+        icon={HiClipboardDocumentList}
+        className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
+        onClick={setPublisher}
+      >
+        My courses
       </DropdownItem>
       <DropdownItem 
         icon={HiDocumentArrowUp}
         className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
       >
-        Publish a course
+        <Link href='/courses/publish'>
+          Publish a course
+        </Link>
       </DropdownItem>
       <DropdownItem 
         icon={HiCog}

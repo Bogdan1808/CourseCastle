@@ -7,7 +7,7 @@ import LoginButton from "./LoginButton"
 import UserActions from "./UserActions"
 
 interface ClientNavbarProps {
-  activePage?: "home" | "courses" | "instructors" | "about" | "login" | "signup"
+  activePage?: "home" | "courses" | "owned_courses" | "wishlisted_courses" |"about"
 }
 
 export default function ClientNavbar({ activePage }: ClientNavbarProps) {
@@ -37,7 +37,7 @@ export default function ClientNavbar({ activePage }: ClientNavbarProps) {
             Home
           </Link>
           <Link
-            href="/allcourses"
+            href="/courses"
             className={`${
               activePage === "courses" ? "text-amber-400 font-semibold" : "text-stone-200"
             } hover:text-amber-400 transition-colors`}
@@ -45,12 +45,20 @@ export default function ClientNavbar({ activePage }: ClientNavbarProps) {
             Courses
           </Link>
           <Link
-            href="/instructors"
+            href="/courses/owned"
             className={`${
-              activePage === "instructors" ? "text-amber-400 font-semibold" : "text-stone-200"
+              activePage === "owned_courses" ? "text-amber-400 font-semibold" : "text-stone-200"
             } hover:text-amber-400 transition-colors`}
           >
-            Instructors
+            Owned Courses
+          </Link>
+          <Link
+            href="/courses/wishlisted"
+            className={`${
+              activePage === "wishlisted_courses" ? "text-amber-400 font-semibold" : "text-stone-200"
+            } hover:text-amber-400 transition-colors`}
+          >
+            Wishlisted Courses
           </Link>
           <Link
             href="/about"

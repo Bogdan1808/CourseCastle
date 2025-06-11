@@ -12,6 +12,7 @@ public class CourseDbContext : DbContext
     }
 
     public DbSet<Course> Courses { get; set; }
+    public DbSet<UserCourse> UserCourses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,5 +20,10 @@ public class CourseDbContext : DbContext
         modelBuilder.AddInboxStateEntity();
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();
+
+        modelBuilder.Entity<UserCourse>()
+            .HasOne(uc => uc.Course)
+            .WithMany(c => c.UserCourses)
+            .HasForeignKey(uc => uc.CourseId);
     }
 }
