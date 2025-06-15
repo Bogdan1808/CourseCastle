@@ -4,13 +4,14 @@ import { Navbar } from '@/components/navbar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Award, BookOpen, Calendar, CheckCircle, ChevronRight, Clock, Euro, Star, Users } from 'lucide-react';
+import { Award, BookOpen, Calendar, CheckCircle, ChevronRight, Clock, Delete, Euro, Star, Users } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 import Image from 'next/image';
 import EditButton from './EditButton';
 import { getCurrentUser } from '@/app/actions/authActions';
 import WishlistButton from './WishlistButton';
+import DeleteButton from './DeleteButton';
 
 const formatDuration = (duration: string) => {
   const [hours, minutes] = duration.split(":")
@@ -252,7 +253,10 @@ return (
 
 
                   {user?.username === course.publisher ? (
-                    <EditButton id={course.id} />
+                    <>
+                      <EditButton id={course.id} />
+                      <DeleteButton id={course.id} />
+                    </>
                   ) : course.ownership === "Owned" && course.status === "Started" ? (
                     <Link href={`/learn/${course.id}`}>
                       <Button className="w-full btn-medieval mb-3 py-6 text-lg">Continue Learning</Button>

@@ -10,4 +10,5 @@ public class UpdateCourseDto
     public string Level { get; set; }
     public int? CoursePrice { get; set; }
     public int? Rating { get; set; }
+    public string ImageUrl { get; set; }
 }

@@ -100,3 +100,11 @@ export async function removeFromWishlist(courseId: string): Promise<{success: bo
     return { success: false, message: errorMessage };
   }
 }
+
+export async function updateCourse(data: FieldValues, id: string) {
+  return fetchWrapper.put(`courses/${id}`, data);
+}
+
+export async function deleteCourse(id: string) {
+  return fetchWrapper.del(`courses/${id}`);
+}

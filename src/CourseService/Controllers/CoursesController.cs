@@ -96,6 +96,7 @@ public class CoursesController : ControllerBase
         course.Item.Instructor = updateCourseDto.Instructor ?? course.Item.Instructor;
         course.Item.Description = updateCourseDto.Description ?? course.Item.Description;
         course.Item.CoursePrice = updateCourseDto.CoursePrice ?? course.Item.CoursePrice;
+        course.Item.ImageUrl = updateCourseDto.ImageUrl ?? course.Item.ImageUrl;
 
         await _publishEndpoint.Publish(_mapper.Map<CourseUpdated>(course));
 

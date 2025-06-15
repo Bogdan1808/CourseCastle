@@ -9,7 +9,7 @@ type Props = {
 export default function EditButton({ id }: Props) {
   return (
     <Link href={`/courses/update/${id}`} className="w-full">
-      <Button className="w-full btn-medieval py-6 text-lg">
+      <Button className="w-full btn-medieval mb-3 py-6 text-lg">
         Update Course
       </Button>
     </Link>
