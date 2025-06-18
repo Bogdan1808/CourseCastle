@@ -94,7 +94,7 @@ services:
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
       - Stripe__PublishableKey=pk_test_51Rb3zGQKsTSPyMHnRZS0TIH6CdyeF9F38ZyLsq4SnlEF5JE59eTWWztIf6JexyydPZ8iZK8NYmIQsOSdwIXMKd7f00BOAOB5oE
-      - Stripe__SecretKey=sk_test_51Rb3zGQKsTSPyMHnZXt1uzpSQIaD1b1e2GIeyabVGAltRkyL3hSziBWUGEVdmViOyqDXBECTJuDoJs0PPKdUwaBQ005zsHwpvo
+      - Stripe__SecretKey=0
       - Stripe__WebhookSecret=whsec_ab5f9b660937cd2d944af6b66b77e39ecd295b44dcfe87cd54c16551cf70077f
       - CourseServiceUrl=http://course-svc
       - IdentityServiceUrl=http://identity-svc
