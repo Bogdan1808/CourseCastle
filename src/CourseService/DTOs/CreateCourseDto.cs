@@ -1,33 +1,19 @@
+#nullable enable
 using System.ComponentModel.DataAnnotations;
 
 namespace CourseService.DTOs;
 
 public class CreateCourseDto
 {
-    [Required]
-    public string CourseTitle { get; set; }
+    public required string CourseTitle { get; set; }
+    public required string Instructor { get; set; }
+    public required string Description { get; set; }
+    public required DateOnly? DateCreated { get; set; }
+    public required string Category { get; set; }
+    public required string Level { get; set; }
+    public required TimeOnly? Duration { get; set; }
+    public required int CoursePrice { get; set; }
 
-    [Required]
-    public string Instructor { get; set; }
-
-    [Required]
-    public string Description { get; set; }
-
-    [Required]
-    public DateOnly? DateCreated { get; set; }
-
-    [Required]
-    public string Category { get; set; }
-
-    [Required]
-    public string Level { get; set; }
-
-    [Required]
-    public TimeOnly? Duration { get; set; }
-
-    [Required]
-    public int CoursePrice { get; set; }
-
-    [Required]
-    public string ImageUrl { get; set; }
+    public IFormFile? ImageFile { get; set; }
+    public IFormFile? VideoFile { get; set; }
 }

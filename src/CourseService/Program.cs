@@ -48,6 +48,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters.NameClaimType = "username";
     });
 
+builder.Services.AddScoped<CloudinaryService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

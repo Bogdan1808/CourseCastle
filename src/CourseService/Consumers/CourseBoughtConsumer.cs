@@ -21,58 +21,58 @@ public class CourseBoughtConsumer : IConsumer<CourseBought>
     {
         Console.WriteLine("---> Consuming CourseBought event");
         
-        // if (!Guid.TryParse(context.Message.CourseId, out var courseId))
-        // {
-        //     Console.WriteLine($"Invalid CourseId format: {context.Message.CourseId}");
-        //     return;
-        // }
+        if (!Guid.TryParse(context.Message.CourseId, out var courseId))
+        {
+            Console.WriteLine($"Invalid CourseId format: {context.Message.CourseId}");
+            return;
+        }
         
-        // var course = await _dbContext.Courses.FindAsync(courseId);
+        var course = await _dbContext.Courses.FindAsync(courseId);
         
-        // if (course == null)
-        // {
-        //     Console.WriteLine($"Course with ID {courseId} not found");
-        //     return;
-        // }
+        if (course == null)
+        {
+            Console.WriteLine($"Course with ID {courseId} not found");
+            return;
+        }
 
-        // var existingUserCourse = await _dbContext.UserCourses
-        //     .FirstOrDefaultAsync(uc => uc.UserId == context.Message.UserId && uc.CourseId == courseId);
+        var existingUserCourse = await _dbContext.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == context.Message.UserId && uc.CourseId == courseId);
 
-        // if (existingUserCourse == null)
-        // {
-        //     var userCourse = new UserCourse
-        //     {
-        //         Id = Guid.NewGuid(),
-        //         UserId = context.Message.UserId,
-        //         CourseId = courseId,
-        //         Ownership = Ownership.Owned,
-        //         Status = Status.NotStarted
-        //     };
+        if (existingUserCourse == null)
+        {
+            var userCourse = new UserCourse
+            {
+                Id = Guid.NewGuid(),
+                UserId = context.Message.UserId,
+                CourseId = courseId,
+                Ownership = Ownership.Owned,
+                Status = Status.NotStarted
+            };
 
-        //     _dbContext.UserCourses.Add(userCourse);
-        //     course.Students = (course.Students ?? 0) + 1;
+            _dbContext.UserCourses.Add(userCourse);
+            course.Students = (course.Students ?? 0) + 1;
             
-        //     await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             
-        //     Console.WriteLine($"Added course {courseId} to user {context.Message.UserId}");
-        // }
-        // else
-        // {
-        //     if (existingUserCourse.Ownership != Ownership.Owned)
-        //     {
-        //         existingUserCourse.Ownership = Ownership.Owned;
-        //         existingUserCourse.Status = Status.NotStarted;
+            Console.WriteLine($"Added course {courseId} to user {context.Message.UserId}");
+        }
+        else
+        {
+            if (existingUserCourse.Ownership != Ownership.Owned)
+            {
+                existingUserCourse.Ownership = Ownership.Owned;
+                existingUserCourse.Status = Status.NotStarted;
                 
-        //         course.Students = (course.Students ?? 0) + 1;
+                course.Students = (course.Students ?? 0) + 1;
                 
-        //         await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 
-        //         Console.WriteLine($"Updated ownership for course {courseId} and user {context.Message.UserId}");
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine($"User {context.Message.UserId} already owns course {courseId}");
-        //     }
-        // }
+                Console.WriteLine($"Updated ownership for course {courseId} and user {context.Message.UserId}");
+            }
+            else
+            {
+                Console.WriteLine($"User {context.Message.UserId} already owns course {courseId}");
+            }
+        }
     }
 }

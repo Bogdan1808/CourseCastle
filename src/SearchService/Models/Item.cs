@@ -4,7 +4,7 @@ namespace SearchService.Models;
 
 public class Item : Entity
 {
-    public required string  Publisher { get; set; }
+    public required string Publisher { get; set; }
     public int Students { get; set; }
     public DateTime PostedAt { get; set; }
     public DateTime LastUpdatedAt { get; set; }
@@ -18,4 +18,5 @@ public class Item : Entity
     public int CoursePrice { get; set; }
     public float Rating { get; set; }
     public required string ImageUrl { get; set; }
+    public required string VideoUrl { get; set; }
 }

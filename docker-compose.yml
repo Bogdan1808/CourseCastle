@@ -21,6 +21,11 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
   course-svc:
     image: pasca1808/course-svc:latest
     build:
@@ -76,5 +81,29 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - 6001:80
-
+  payment-svc:
+    image: pasca1808/payment-svc:latest
+    build:
+      context: .
+      dockerfile: src/PaymentService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432;Database=payment;Username=postgres;Password=postgrespw
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+      - Stripe__PublishableKey=pk_test_51Rb3zGQKsTSPyMHnRZS0TIH6CdyeF9F38ZyLsq4SnlEF5JE59eTWWztIf6JexyydPZ8iZK8NYmIQsOSdwIXMKd7f00BOAOB5oE
+      - Stripe__SecretKey=sk_test_51Rb3zGQKsTSPyMHnZXt1uzpSQIaD1b1e2GIeyabVGAltRkyL3hSziBWUGEVdmViOyqDXBECTJuDoJs0PPKdUwaBQ005zsHwpvo
+      - Stripe__WebhookSecret=whsec_ab5f9b660937cd2d944af6b66b77e39ecd295b44dcfe87cd54c16551cf70077f
+      - CourseServiceUrl=http://course-svc
+      - IdentityServiceUrl=http://identity-svc
+      - NotificationUrl=http://gateway-svc
+    ports:
+      - 7003:80
+    depends_on:
+      postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
   

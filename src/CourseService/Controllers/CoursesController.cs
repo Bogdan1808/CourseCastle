@@ -20,12 +20,14 @@ public class CoursesController : ControllerBase
     private readonly CourseDbContext _context;
     private readonly IMapper _mapper;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly CloudinaryService _cloudinaryService;
 
-    public CoursesController(CourseDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint)
+    public CoursesController(CourseDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint, CloudinaryService cloudinaryService)
     {
         _context = context;
         _mapper = mapper;
         _publishEndpoint = publishEndpoint;
+        _cloudinaryService = cloudinaryService;
     }
 
     [HttpGet]
@@ -59,23 +61,68 @@ public class CoursesController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<CourseDto>> CreateCourse(CreateCourseDto courseDto)
+    public async Task<ActionResult<CourseDto>> CreateCourse([FromForm] CreateCourseDto courseDto)
     {
-        var course = _mapper.Map<Course>(courseDto);
+        string imageUrl = null, imagePublicId = null;
+        string videoUrl = null, videoPublicId = null;
 
-        course.Publisher = User.Identity.Name;
+        try
+        {
+            if (courseDto.ImageFile != null)
+            {
+                var imageResult = await _cloudinaryService.UploadImageAsync(courseDto.ImageFile);
+                imageUrl = imageResult.SecureUrl.ToString();
+                imagePublicId = imageResult.PublicId;
+                Console.WriteLine($"Image uploaded: {imageUrl}");
+            }
 
-        _context.Courses.Add(course);
+            if (courseDto.VideoFile != null)
+            {
+                var videoResult = await _cloudinaryService.UploadVideoAsync(courseDto.VideoFile);
+                videoUrl = videoResult.SecureUrl.ToString();
+                videoPublicId = videoResult.PublicId;
+                Console.WriteLine($"Video uploaded: {videoUrl}");
+            }
 
-        var newCourse = _mapper.Map<CourseDto>(course);
+            var course = _mapper.Map<Course>(courseDto);
+            course.Publisher = User.Identity.Name;
 
-        await _publishEndpoint.Publish(_mapper.Map<CoursePublished>(newCourse));
+            if (course.Item != null)
+            {
+                course.Item.ImageUrl = imageUrl;
+                course.Item.ImagePublicId = imagePublicId;
+                course.Item.VideoUrl = videoUrl;
+                course.Item.VideoPublicId = videoPublicId;
+            }
 
-        var result = await _context.SaveChangesAsync() > 0;
+            _context.Courses.Add(course);
 
-        if (!result) return BadRequest("Could not save changes to Database");
+            var newCourse = _mapper.Map<CourseDto>(course);
+            await _publishEndpoint.Publish(_mapper.Map<CoursePublished>(newCourse));
 
-        return CreatedAtAction(nameof(GetCourseById), new { course.Id }, _mapper.Map<CourseDto>(course));
+            var result = await _context.SaveChangesAsync() > 0;
+            if (!result) return BadRequest("Could not save changes to Database");
+
+            Console.WriteLine($"Course created successfully: {course.Id}");
+            return CreatedAtAction(nameof(GetCourseById), new { course.Id }, newCourse);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Course creation failed: {ex.Message}");
+
+            if (!string.IsNullOrEmpty(imagePublicId))
+            {
+                await _cloudinaryService.DeleteFileAsync(imagePublicId);
+                Console.WriteLine($"Cleaned up image: {imagePublicId}");
+            }
+            if (!string.IsNullOrEmpty(videoPublicId))
+            {
+                await _cloudinaryService.DeleteFileAsync(videoPublicId);
+                Console.WriteLine($"Cleaned up video: {videoPublicId}");
+            }
+
+            return StatusCode(500, new { message = "Course creation failed", error = ex.Message });
+        }
     }
 
     [Authorize]
@@ -96,7 +143,6 @@ public class CoursesController : ControllerBase
         course.Item.Instructor = updateCourseDto.Instructor ?? course.Item.Instructor;
         course.Item.Description = updateCourseDto.Description ?? course.Item.Description;
         course.Item.CoursePrice = updateCourseDto.CoursePrice ?? course.Item.CoursePrice;
-        course.Item.ImageUrl = updateCourseDto.ImageUrl ?? course.Item.ImageUrl;
 
         await _publishEndpoint.Publish(_mapper.Map<CourseUpdated>(course));
 
@@ -220,7 +266,7 @@ public class CoursesController : ControllerBase
 
         return Ok(result);
     }
-    
+
     [Authorize]
     [HttpDelete("wishlist/{id}")]
     public async Task<ActionResult> RemoveFromWishlist(Guid id)
@@ -250,4 +296,49 @@ public class CoursesController : ControllerBase
 
         return Ok("Course removed from wishlist");
     }
+
+    [Authorize]
+    [HttpPut("start/{id}")]
+    public async Task<ActionResult> StartCourse(Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var existingUserCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id);
+
+        if (existingUserCourse != null)
+        {
+            if (existingUserCourse.Ownership == Ownership.Owned && existingUserCourse.Status == Status.NotStarted)
+            {
+                existingUserCourse.Status = Status.Started;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok("Course Started");
+    }
+
+    [Authorize]
+    [HttpPut("finish/{id}")]
+    public async Task<ActionResult> FinishCourse(Guid id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var existingUserCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id);
+
+        if (existingUserCourse != null)
+        {
+            if (existingUserCourse.Ownership == Ownership.Owned && existingUserCourse.Status == Status.Started)
+            {
+                existingUserCourse.Status = Status.Finished;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok("Course finished, congratulations!");
+    }
+    
 }

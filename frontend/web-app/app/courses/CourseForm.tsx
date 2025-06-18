@@ -2,7 +2,7 @@
 
 import Input from '@/components/Input';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { publishCourse, updateCourse } from '../actions/courseActions';
 import toast from 'react-hot-toast';
@@ -22,13 +22,15 @@ interface CourseFormFields {
     level: string;
     duration: string;
     coursePrice: string;
-    imageUrl: string;
     dateCreated: string;
 }
 
 export default function CourseForm({course}: Props) {
     const router = useRouter();
     const pathname = usePathname();
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [videoFile, setVideoFile] = useState<File | null>(null);
+    
     const { control, handleSubmit, reset, formState: { isSubmitting, isValid, isDirty } } = useForm<CourseFormFields>({
         mode: 'onTouched',
         defaultValues: {
@@ -39,20 +41,22 @@ export default function CourseForm({course}: Props) {
             level: '',
             duration: '',
             coursePrice: '',
-            imageUrl: '',
             dateCreated: ''
         }
     });
 
     useEffect(() => {
         if (course) {
-            const { courseTitle, description, instructor, coursePrice, imageUrl } = course;
+            const { courseTitle, description, instructor, coursePrice } = course;
             reset({
                 courseTitle,
                 description,
                 instructor,
                 coursePrice: coursePrice?.toString() || '',
-                imageUrl
+                category: course.category || '',
+                level: course.level || '',
+                duration: course.duration?.toString() || '',
+                dateCreated: course.dateCreated?.toString() || ''
             });
         }
     }, [course, reset]);
@@ -62,24 +66,46 @@ export default function CourseForm({course}: Props) {
 
     async function onSubmit(data: CourseFormFields) {
         try {
+            const formData = new FormData();
+            formData.append('CourseTitle', data.courseTitle);
+            formData.append('Instructor', data.instructor);
+            formData.append('Description', data.description);
+            formData.append('Category', data.category);
+            formData.append('Level', data.level);
+            formData.append('Duration', data.duration);
+            formData.append('CoursePrice', data.coursePrice);
+            formData.append('DateCreated', data.dateCreated);
+            
+            if (imageFile) {
+                formData.append('ImageFile', imageFile);
+            }
+            
+            if (videoFile) {
+                formData.append('VideoFile', videoFile);
+            }
+            
             let id = '';
             let res;
             if(pathname === '/courses/publish') {
-                console.log("Submitting data:", data);
-                res = await publishCourse(data);
+                res = await publishCourse(formData);
                 id = res.id;
             } else {
                 if (course) {
-                    res = await updateCourse(data, course.id);
+                    res = await updateCourse(formData, course.id);
                     id = course.id;
                 }
             }
-            if (res.error) {
-                throw new Error(res.error.message || "Unknown error");
+            
+            if (res?.error) {
+                throw new Error(res.error.message || "API returned error");
             }
+            
+            toast.success("Course saved successfully!");
             router.push(`/courses/details/${id}`);
+            
         } catch (error: any) {
-            toast.error(error.status + ' ' + error.message)
+            console.error("Form submission failed:", error?.message);
+            toast.error("Failed to save course: " + (error?.message || "Unknown error"));
         }
     }
 
@@ -117,10 +143,30 @@ export default function CourseForm({course}: Props) {
                     </>}  
 
                     <Input name="coursePrice" label="Price" type="number" control={control} rules={{ required: "Price is required" }} showLabel inputClassName={inputStyle} />
-                    <Input name="imageUrl" label="Thumbnail Image URL" control={control} rules={{ required: "Image URL is required" }} showLabel inputClassName={inputStyle} />
+                    
+                    <div className="flex flex-col">
+                        <label className="text-stone-300 mb-2">Course Thumbnail</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                            className={inputStyle}
+                        />
+                        {imageFile && <span className="text-sm text-stone-400 mt-1">{imageFile.name}</span>}
+                    </div>
+                    
+                    <div className="flex flex-col">
+                        <label className="text-stone-300 mb-2">Course Video (Optional)</label>
+                        <input
+                            type="file"
+                            accept="video/*"
+                            onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                            className={inputStyle}
+                        />
+                        {videoFile && <span className="text-sm text-stone-400 mt-1">{videoFile.name}</span>}
+                    </div>
                 </div>
                 <Input name="description" label="Course Description" control={control} rules={{ required: "Description is required" }} showLabel inputClassName={inputStyle} />
-
 
                 <div className="flex justify-between mt-4">
                     <button
@@ -132,7 +178,7 @@ export default function CourseForm({course}: Props) {
                     </button>
                     <button
                         type="submit"
-                        disabled={!isValid || !isDirty || isSubmitting}
+                        disabled={!isValid || isSubmitting}
                         className="bg-gradient-to-r from-amber-400 to-amber-600 text-stone-900 font-bold rounded-lg px-8 py-2 shadow hover:from-amber-500 hover:to-amber-700 transition disabled:opacity-60"
                     >
                         {isSubmitting ? "Submitting..." : "Submit"}

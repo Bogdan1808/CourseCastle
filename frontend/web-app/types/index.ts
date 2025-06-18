@@ -18,6 +18,7 @@ export type Course = {
   level: string
   duration: string
   coursePrice: number
-  rating?: number
+  rating: number
   imageUrl: string
+  videoUrl: string
 }

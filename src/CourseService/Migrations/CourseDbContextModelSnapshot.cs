@@ -72,6 +72,9 @@ namespace CourseService.Migrations
                     b.Property<TimeOnly>("Duration")
                         .HasColumnType("time without time zone");
 
+                    b.Property<string>("ImagePublicId")
+                        .HasColumnType("text");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
@@ -83,6 +86,12 @@ namespace CourseService.Migrations
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");
+
+                    b.Property<string>("VideoPublicId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

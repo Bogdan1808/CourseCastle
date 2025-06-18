@@ -16,8 +16,8 @@ export async function updateCourseTest(): Promise<{status: number, message: stri
   return fetchWrapper.put('courses/c45e54db-5587-4acd-8b30-11745cc8d903', data);
 }
 
-export async function publishCourse(data: FieldValues){
-  return fetchWrapper.post('courses', data);
+export async function publishCourse(formData: FormData){
+  return fetchWrapper.postFormData('courses', formData);
 }
 
 export async function getDetailedViewData(id: string): Promise<Course & { ownership: string; status: string }> {
@@ -101,8 +101,8 @@ export async function removeFromWishlist(courseId: string): Promise<{success: bo
   }
 }
 
-export async function updateCourse(data: FieldValues, id: string) {
-  return fetchWrapper.put(`courses/${id}`, data);
+export async function updateCourse(formData: FormData, id: string) {
+  return fetchWrapper.putFormData(`courses/${id}`, formData);
 }
 
 export async function deleteCourse(id: string) {

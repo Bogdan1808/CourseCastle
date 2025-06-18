@@ -43,7 +43,10 @@ public class DbInitializer
                     Duration = new TimeOnly(4, 30),
                     CoursePrice = 22000,
                     Rating = 4.7f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2018/09/12/11/05/ai-3674120_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2018/09/12/11/05/ai-3674120_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -64,7 +67,10 @@ public class DbInitializer
                     Duration = new TimeOnly(3, 45),
                     CoursePrice = 18000,
                     Rating = 4.6f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/18/17/17/paint-1835091_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/18/17/17/paint-1835091_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -85,7 +91,10 @@ public class DbInitializer
                     Duration = new TimeOnly(5, 0),
                     CoursePrice = 25000,
                     Rating = 4.5f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2015/09/05/21/51/startup-924950_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2015/09/05/21/51/startup-924950_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -106,7 +115,10 @@ public class DbInitializer
                     Duration = new TimeOnly(2, 15),
                     CoursePrice = 9000,
                     Rating = 4.8f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/14/03/16/yoga-1822474_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/14/03/16/yoga-1822474_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -127,7 +139,10 @@ public class DbInitializer
                     Duration = new TimeOnly(6, 0),
                     CoursePrice = 17000,
                     Rating = 4.9f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/16/camera-1283975_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/16/camera-1283975_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -148,7 +163,10 @@ public class DbInitializer
                     Duration = new TimeOnly(8, 0),
                     CoursePrice = 30000,
                     Rating = 4.4f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2015/01/08/18/24/software-593310_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2015/01/08/18/24/software-593310_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -169,7 +187,10 @@ public class DbInitializer
                     Duration = new TimeOnly(1, 30),
                     CoursePrice = 5000,
                     Rating = 4.9f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/22/meditation-1287205_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/22/meditation-1287205_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -190,7 +211,10 @@ public class DbInitializer
                     Duration = new TimeOnly(4, 0),
                     CoursePrice = 20000,
                     Rating = 4.6f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2017/05/07/08/56/spaghetti-2290873_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2017/05/07/08/56/spaghetti-2290873_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -211,7 +235,10 @@ public class DbInitializer
                     Duration = new TimeOnly(3, 0),
                     CoursePrice = 14000,
                     Rating = 4.2f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2017/01/30/20/27/finance-2020953_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2017/01/30/20/27/finance-2020953_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             },
             new Course
@@ -232,7 +259,10 @@ public class DbInitializer
                     Duration = new TimeOnly(4, 15),
                     CoursePrice = 24000,
                     Rating = 4.8f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/09/28/23/36/monitor-1709497_960_720.jpg"
+                    ImageUrl = "https://cdn.pixabay.com/photo/2016/09/28/23/36/monitor-1709497_960_720.jpg",
+                    ImagePublicId = null,
+                    VideoUrl = null,
+                    VideoPublicId = null
                 }
             }
 

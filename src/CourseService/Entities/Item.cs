@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourseService.Entities;
 
@@ -15,7 +14,12 @@ public class Item
     public TimeOnly Duration { get; set; }
     public int CoursePrice { get; set; }
     public float Rating { get; set; }
+
+    //media
     public string ImageUrl { get; set; }
+    public string ImagePublicId { get; set; }
+    public string VideoUrl { get; set; }
+    public string VideoPublicId { get; set; }
 
     //relations
     public Course Course { get; set; }
