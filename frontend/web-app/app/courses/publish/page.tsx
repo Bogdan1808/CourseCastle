@@ -1,12 +1,13 @@
 import ClientNavbar from "@/components/ClientNavbar";
 import React from "react";
 import CourseForm from "../CourseForm";
+import { Footer } from "@/components/Footer";
 
 export default function Publish() {
   return (
 <div className="min-h-screen bg-castle-wall relative">
   <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/50"></div>
-  <div className="relative z-10">
+  <div className="relative z-10 mb-10">
     <ClientNavbar activePage="courses" />
     <div className="px-4 mt-8">
       <div className="w-[90%] max-w-none mx-auto flex flex-col md:flex-row rounded-2xl border border-stone-600 overflow-hidden bg-stone-900/90">
@@ -22,10 +23,11 @@ export default function Publish() {
             <CourseForm />
           </div>
         </div>
-
+      
       </div>
     </div>
   </div>
+  <Footer/>
 </div>
 
   );

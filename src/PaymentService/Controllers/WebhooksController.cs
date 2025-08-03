@@ -15,15 +15,18 @@ public class WebhooksController : ControllerBase
     private readonly PaymentDbContext _context;
     private readonly IConfiguration _configuration;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly Mailing.MailingService _mailingService;
 
     public WebhooksController(
         PaymentDbContext context,
         IConfiguration configuration,
-        IPublishEndpoint publishEndpoint)
+        IPublishEndpoint publishEndpoint,
+        Mailing.MailingService mailingService)
     {
         _context = context;
         _configuration = configuration;
         _publishEndpoint = publishEndpoint;
+        _mailingService = mailingService;
     }
 
     [HttpPost("stripe")]
@@ -90,7 +93,39 @@ public class WebhooksController : ControllerBase
         payment.Status = PaymentStatus.Succeeded;
         payment.CompletedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
-    
+
+        Console.WriteLine($"[Webhook] Sending email to: {payment.CustomerEmail}, name: {payment.UserName}, course: {payment.CourseTitle}, completedAt: {payment.CompletedAt}");
+        
+        if (string.IsNullOrEmpty(payment.CustomerEmail))
+        {
+            Console.WriteLine($"[ERROR] CustomerEmail is null or empty for payment {payment.Id}");
+            return;
+        }
+        if (string.IsNullOrEmpty(payment.UserName))
+        {
+            Console.WriteLine($"[ERROR] UserName is null or empty for payment {payment.Id}");
+            return;
+        }
+        if (string.IsNullOrEmpty(payment.CourseTitle))
+        {
+            Console.WriteLine($"[ERROR] CourseTitle is null or empty for payment {payment.Id}");
+            return;
+        }
+
+        try
+        {
+            await _mailingService.SendEmailAsync(
+                payment.UserName ?? "User",
+                payment.CustomerEmail,
+                payment.CompletedAt ?? DateTime.UtcNow,
+                payment.CourseTitle
+            );
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ERROR] Failed to send email: {ex}");
+        }
+
         try
         {
             Console.WriteLine($"----------------------------Publishing CourseBought event for user {payment.UserId} and course {payment.CourseId}");
@@ -102,9 +137,11 @@ public class WebhooksController : ControllerBase
                 BuyTime = payment.CompletedAt ?? DateTime.UtcNow,
                 PaymentStatus = payment.Status.ToString()
             };
-    
+
             await _publishEndpoint.Publish(courseBoughtEvent);
             Console.WriteLine($"----------------------------Published CourseBought event for user {payment.UserId} and course {payment.CourseId}");
+
+
         }
         catch (Exception ex)
         {

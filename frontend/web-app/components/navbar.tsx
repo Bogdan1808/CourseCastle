@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/app/actions/authActions"
 import UserActions from "./UserActions"
 
 interface NavbarProps {
-  activePage?: "home" | "courses" | "owned_courses" | "wishlisted_courses" |"about"
+  activePage?: "home" | "courses" | "owned_courses" | "wishlisted_courses"
 }
 
 export async function Navbar({ activePage }: NavbarProps) {
@@ -55,14 +55,6 @@ export async function Navbar({ activePage }: NavbarProps) {
             } hover:text-amber-400 transition-colors`}
           >
             Wishlisted Courses
-          </Link>
-          <Link
-            href="/about"
-            className={`${
-              activePage === "about" ? "text-amber-400 font-semibold" : "text-stone-200"
-            } hover:text-amber-400 transition-colors`}
-          >
-            About
           </Link>
         </nav>
 

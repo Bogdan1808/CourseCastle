@@ -78,5 +78,34 @@ public class SeedData
             Log.Debug("bob already exists");
 
         }
+
+        // var pasca = userMgr.FindByNameAsync("pasca").Result;
+        // if (pasca == null)
+        // {
+        //     pasca = new ApplicationUser
+        //     {
+        //         UserName = "pasca",
+        //         Email = "bnpasca@gmail.com",
+        //         EmailConfirmed = true,
+        //     };
+        //     var result = userMgr.CreateAsync(pasca, "Pass123$").Result;
+        //     if (!result.Succeeded)
+        //     {
+        //         throw new Exception(result.Errors.First().Description);
+        //     }
+
+        //     result = userMgr.AddClaimsAsync(pasca, new Claim[]{
+        //                     new Claim(JwtClaimTypes.Name, "Bogdan-Nicolae Pasca")
+        //                 }).Result;
+        //     if (!result.Succeeded)
+        //     {
+        //         throw new Exception(result.Errors.First().Description);
+        //     }
+        //     Log.Debug("pasca created");
+        // }
+        // else
+        // {
+        //     Log.Debug("pasca already exists");
+        // }
     }
 }

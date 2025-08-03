@@ -36,6 +36,14 @@ builder.Services.AddMassTransit(x =>
             e.ConfigureConsumer<CoursePublishedConsumer>(context);
         });
 
+        cfg.ReceiveEndpoint("search-course-updated", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5, 5));
+
+            e.ConfigureConsumer<CourseUpdatedConsumer>(context);
+            
+        });
+
         cfg.ConfigureEndpoints(context);
     });
 });

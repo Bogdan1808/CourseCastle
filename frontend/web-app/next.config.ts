@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     domains: [
       'cdn.pixabay.com',
       'i2.wp.com',
+      'res.cloudinary.com'
     ],
   }
 };

@@ -21,7 +21,9 @@ namespace IdentityService.Pages.Account.Register
 
         [BindProperty]
         public RegisterViewModel Input { get; set; }
+
         public bool RegisterSuccess { get; set; }
+
         public IActionResult OnGet(string returnUrl)
         {
             Input = new RegisterViewModel
@@ -37,6 +39,7 @@ namespace IdentityService.Pages.Account.Register
             {
                 return Redirect("~/");
             }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -57,7 +60,15 @@ namespace IdentityService.Pages.Account.Register
 
                     RegisterSuccess = true;
                 }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
+
             return Page();
         }
     }

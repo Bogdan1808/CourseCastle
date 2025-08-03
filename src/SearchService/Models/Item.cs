@@ -15,8 +15,8 @@ public class Item : Entity
     public DateOnly DateCreated { get; set; }
     public string Level { get; set; }
     public TimeOnly Duration { get; set; }
-    public int CoursePrice { get; set; }
-    public float Rating { get; set; }
+    public double CoursePrice { get; set; }
     public required string ImageUrl { get; set; }
     public required string VideoUrl { get; set; }
+    public double Rating { get; set; }
 }

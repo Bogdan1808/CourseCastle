@@ -28,7 +28,7 @@ public static class Config
                 RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
                 ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
                 AllowedGrantTypes = {GrantType.ResourceOwnerPassword },
-                AccessTokenLifetime = 3600
+                AccessTokenLifetime = 3600*24
             },
             new Client
             {

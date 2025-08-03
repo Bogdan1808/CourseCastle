@@ -41,9 +41,6 @@ export default function CourseCard({ course }: CourseCardProps) {
             <Users className="h-4 w-4" />
             <span>{course.students.toLocaleString()} students</span>
           </div>
-          {/* <Link href={`/courses/${course.id}`}>
-            <Badge className="bg-amber-600 hover:bg-amber-700 cursor-pointer text-white">View Course</Badge>
-          </Link> */}
         </CardFooter>
       </Card>
     </Link>

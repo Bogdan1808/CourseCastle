@@ -138,14 +138,13 @@ export default function CourseForm({course}: Props) {
                             rules={{ required: "Level is required" }} 
                             showLabel 
                         />
-                        <Input name="duration" label="Duration" control={control} rules={{ required: "Duration is required" }} showLabel inputClassName={inputStyle}/>
                         <Input name="dateCreated" label="Date created" type="date" control={control} rules={{ required: "Creation date is required" }} showLabel inputClassName={inputStyle} />
                     </>}  
 
                     <Input name="coursePrice" label="Price" type="number" control={control} rules={{ required: "Price is required" }} showLabel inputClassName={inputStyle} />
                     
                     <div className="flex flex-col">
-                        <label className="text-stone-300 mb-2">Course Thumbnail</label>
+                        <label className="text-amber-300 mb-2 font-bold">Course Thumbnail (Optional)</label>
                         <input
                             type="file"
                             accept="image/*"
@@ -156,7 +155,7 @@ export default function CourseForm({course}: Props) {
                     </div>
                     
                     <div className="flex flex-col">
-                        <label className="text-stone-300 mb-2">Course Video (Optional)</label>
+                        <label className="text-amber-300 mb-2 font-bold">Course Video (Optional)</label>
                         <input
                             type="file"
                             accept="video/*"

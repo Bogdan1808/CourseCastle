@@ -14,7 +14,7 @@ public class CoursePublished
     public DateOnly DateCreated { get; set; }
     public string Level { get; set; }
     public TimeOnly Duration { get; set; }
-    public int CoursePrice { get; set; }
+    public double CoursePrice { get; set; }
     public float Rating { get; set; }
     public string ImageUrl { get; set; }
     public string VideoUrl { get; set; }

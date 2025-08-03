@@ -61,35 +61,32 @@ async function putFormData(url: string, formData: FormData){
 }
 
 async function handleResponse(response: Response) {
-    console.log("=== Response Debug ===");
-    console.log("Status:", response.status);
-    console.log("Status Text:", response.statusText);
-    console.log("Headers:", Object.fromEntries(response.headers.entries()));
-    
     const text = await response.text();
-    console.log("Raw response text:", text);
-    
     let data;
     try {
         data = text && JSON.parse(text);
-        console.log("Parsed JSON:", data);
     } catch (parseError) {
-        console.log("JSON parse error:", parseError);
+        if (text && typeof text === "string") {
+            console.log("Non-JSON response:", text);
+        }
         data = text;
     }
-    
-    if (response.ok) {
-        return data || response.statusText;
-    } else {
-        console.log("=== Error Response ===");
-        const error = { 
-            status: response.status,
-            message: data || response.statusText,
-            statusText: response.statusText
-        }
-        console.log("Error object:", error);
-        throw {error};
-    }
+    return data;
+}
+
+export async function postClient(url: string, body: any, token?: string) {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  const response = await fetch(baseUrl + url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body),
+  });
+  return response.json();
 }
 
 async function getHeaders(): Promise<Headers> {
@@ -117,5 +114,6 @@ export const fetchWrapper = {
     del,
     post,
     postFormData,
-    putFormData
+    putFormData,
+    postClient
 }

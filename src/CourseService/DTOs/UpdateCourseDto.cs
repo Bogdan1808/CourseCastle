@@ -8,8 +8,8 @@ public class UpdateCourseDto
     public string Instructor { get; set; }
     public string Description { get; set; }
     public string Level { get; set; }
-    public int? CoursePrice { get; set; }
-    public int? Rating { get; set; }
+    public double? CoursePrice { get; set; }
+    public double? Rating { get; set; }
     public IFormFile? ImageFile { get; set; }
     public IFormFile? VideoFile { get; set; }
 }

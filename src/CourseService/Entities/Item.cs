@@ -12,9 +12,7 @@ public class Item
     public Category Category { get; set; }
     public Level Level { get; set; }
     public TimeOnly Duration { get; set; }
-    public int CoursePrice { get; set; }
-    public float Rating { get; set; }
-
+    public double CoursePrice { get; set; }
     //media
     public string ImageUrl { get; set; }
     public string ImagePublicId { get; set; }

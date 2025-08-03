@@ -10,7 +10,8 @@ public class Course
     public DateTime PostedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
     public Item Item { get; set; }
+    public double Rating { get; set; }
 
     public ICollection<UserCourse> UserCourses { get; set; }
-
+    public ICollection<Review> Reviews { get; set; }
 }

@@ -15,7 +15,9 @@ public class MappingProfiles : Profile
             .ForMember(d => d.Item, o => o.MapFrom(s => s));
         CreateMap<CreateCourseDto, Item>();
         CreateMap<CourseDto, CoursePublished>();
-        CreateMap<Course, CourseUpdated>().IncludeMembers(a => a.Item);
+        CreateMap<Course, CourseUpdated>()
+            .IncludeMembers(a => a.Item)
+            .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating));
         CreateMap<Item, CourseUpdated>();
         CreateMap<UserCourse, UserCourseDto>();
     }

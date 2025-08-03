@@ -1,4 +1,3 @@
-
 using CourseService.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,14 +8,12 @@ public class DbInitializer
     public static void InitDb(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-
         SeedData(scope.ServiceProvider.GetService<CourseDbContext>());
     }
 
     private static void SeedData(CourseDbContext context)
     {
         context.Database.Migrate();
-
         if (context.Courses.Any())
         {
             Console.WriteLine("Already have data - no need to seed");
@@ -27,247 +24,867 @@ public class DbInitializer
         {
             new Course
             {
-                Id = Guid.Parse("70d0db11-e855-4dff-bdc4-dad63bf9fcba"),
-                Publisher = "bob",
+                Id = Guid.NewGuid(),
+                Publisher = "Bright Future",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Students = 1200,
+                Students = 1776,
                 Item = new Item
                 {
-                    CourseTitle = "Introduction to Machine Learning",
-                    Instructor = "Dr. Alan Turing",
-                    Description = "An introductory course on machine learning algorithms and principles.",
-                    DateCreated = new DateOnly(2022, 12, 1),
+                    CourseTitle = "Creative Writing Essentials",
+                    Instructor = "Jules Carter",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 8, 10),
+                    Category = Category.Art,
+                    Level = Level.Apprentice,
+                    Duration = new TimeOnly(3, 30),
+                    CoursePrice = 86.98,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 656,
+                Item = new Item
+                {
+                    CourseTitle = "Python for Data Science",
+                    Instructor = "Jules Carter",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 10, 13),
                     Category = Category.Programming,
-                    Level = Level.Intermediate,
-                    Duration = new TimeOnly(4, 30),
-                    CoursePrice = 22000,
-                    Rating = 4.7f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2018/09/12/11/05/ai-3674120_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
-                }
-            },
-            new Course
-            {
-                Id = Guid.NewGuid(),
-                Publisher = "Creative Academy",
-                PostedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                Students = 900,
-                Item = new Item
-                {
-                    CourseTitle = "Fundamentals of Graphic Design",
-                    Instructor = "Jane Doe",
-                    Description = "Explore the principles of design and build your creative skills.",
-                    DateCreated = new DateOnly(2023, 5, 10),
-                    Category = Category.Design,
                     Level = Level.Apprentice,
-                    Duration = new TimeOnly(3, 45),
-                    CoursePrice = 18000,
-                    Rating = 4.6f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/18/17/17/paint-1835091_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
+                    Duration = new TimeOnly(2, 30),
+                    CoursePrice = 58.61,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
                 }
             },
-            new Course
-            {
-                Id = Guid.NewGuid(),
-                Publisher = "Business Hub",
-                PostedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                Students = 500,
-                Item = new Item
-                {
-                    CourseTitle = "Startup Business Essentials",
-                    Instructor = "Elon Bright",
-                    Description = "Learn how to launch and manage a successful startup.",
-                    DateCreated = new DateOnly(2023, 8, 21),
-                    Category = Category.Business,
-                    Level = Level.Beginner,
-                    Duration = new TimeOnly(5, 0),
-                    CoursePrice = 25000,
-                    Rating = 4.5f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2015/09/05/21/51/startup-924950_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
-                }
-            },
-            new Course
-            {
-                Id = Guid.NewGuid(),
-                Publisher = "Health Institute",
-                PostedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                Students = 3000,
-                Item = new Item
-                {
-                    CourseTitle = "Yoga for Beginners",
-                    Instructor = "Maya Lopez",
-                    Description = "Start your yoga journey and improve your flexibility and health.",
-                    DateCreated = new DateOnly(2023, 6, 1),
-                    Category = Category.Fitness,
-                    Level = Level.Beginner,
-                    Duration = new TimeOnly(2, 15),
-                    CoursePrice = 9000,
-                    Rating = 4.8f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/11/14/03/16/yoga-1822474_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
-                }
-            },
-            new Course
-            {
-                Id = Guid.NewGuid(),
-                Publisher = "Photographers Guild",
-                PostedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                Students = 1500,
-                Item = new Item
-                {
-                    CourseTitle = "Digital Photography Mastery",
-                    Instructor = "Alex Winters",
-                    Description = "Take stunning photos with DSLR and mirrorless cameras.",
-                    DateCreated = new DateOnly(2022, 11, 11),
-                    Category = Category.Photography,
-                    Level = Level.Apprentice,
-                    Duration = new TimeOnly(6, 0),
-                    CoursePrice = 17000,
-                    Rating = 4.9f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/16/camera-1283975_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
-                }
-            },
-            new Course
-            {
-                Id = Guid.NewGuid(),
-                Publisher = "CodeCamp",
-                PostedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                Students = 2100,
-                Item = new Item
-                {
-                    CourseTitle = "Web Development Bootcamp",
-                    Instructor = "John Dev",
-                    Description = "Full-stack web development with HTML, CSS, JavaScript, and React.",
-                    DateCreated = new DateOnly(2023, 2, 10),
-                    Category = Category.Software,
-                    Level = Level.Intermediate,
-                    Duration = new TimeOnly(8, 0),
-                    CoursePrice = 30000,
-                    Rating = 4.4f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2015/01/08/18/24/software-593310_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
-                }
-            },
+
             new Course
             {
                 Id = Guid.NewGuid(),
                 Publisher = "Mindful Life",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Students = 750,
+                Students = 2090,
+                Item = new Item
+                {
+                    CourseTitle = "Digital Painting Mastery",
+                    Instructor = "Zen Parker",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 2, 16),
+                    Category = Category.Design,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(0, 15),
+                    CoursePrice = 95.53,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2269,
+                Item = new Item
+                {
+                    CourseTitle = "Guitar Chords 101",
+                    Instructor = "Eli Rivers",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 4, 25),
+                    Category = Category.Music,
+                    Level = Level.Beginner,
+                    Duration = new TimeOnly(3, 0),
+                    CoursePrice = 50.63,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4424,
+                Item = new Item
+                {
+                    CourseTitle = "Personal Finance Simplified",
+                    Instructor = "Zen Parker",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 12, 26),
+                    Category = Category.Finance,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(2, 15),
+                    CoursePrice = 82.72,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2912,
+                Item = new Item
+                {
+                    CourseTitle = "Yoga for Beginners",
+                    Instructor = "Sage Bennett",
+                    Description = "Gain essential knowledge and real-world insights.",
+                    DateCreated = new DateOnly(2024, 10, 5),
+                    Category = Category.Health,
+                    Level = Level.Beginner,
+                    Duration = new TimeOnly(1, 0),
+                    CoursePrice = 36.64,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "DevNest",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 3757,
+                Item = new Item
+                {
+                    CourseTitle = "Photography Bootcamp",
+                    Instructor = "Blair West",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 5, 7),
+                    Category = Category.Photography,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(3, 30),
+                    CoursePrice = 83.93,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "DevNest",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1916,
+                Item = new Item
+                {
+                    CourseTitle = "JavaScript Crash Course",
+                    Instructor = "Jules Carter",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 6, 20),
+                    Category = Category.Programming,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(2, 0),
+                    CoursePrice = 94.08,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4821,
                 Item = new Item
                 {
                     CourseTitle = "Mindfulness & Meditation",
-                    Instructor = "Zen Parker",
-                    Description = "Reduce stress and increase clarity with daily meditation.",
-                    DateCreated = new DateOnly(2024, 1, 5),
+                    Instructor = "Aria Moon",
+                    Description = "Explore the tools and techniques of professionals.",
+                    DateCreated = new DateOnly(2024, 12, 23),
                     Category = Category.Spirituality,
-                    Level = Level.Beginner,
-                    Duration = new TimeOnly(1, 30),
-                    CoursePrice = 5000,
-                    Rating = 4.9f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/03/27/22/22/meditation-1287205_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(2, 30),
+                    CoursePrice = 85.91,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
                 }
             },
+
             new Course
             {
                 Id = Guid.NewGuid(),
-                Publisher = "Kitchen Pro",
+                Publisher = "CodeWise",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Students = 3200,
+                Students = 525,
                 Item = new Item
                 {
-                    CourseTitle = "Mastering Italian Cooking",
-                    Instructor = "Giuseppe Rossi",
-                    Description = "Cook traditional Italian dishes like a pro.",
-                    DateCreated = new DateOnly(2023, 3, 30),
-                    Category = Category.Cooking,
-                    Level = Level.Apprentice,
-                    Duration = new TimeOnly(4, 0),
-                    CoursePrice = 20000,
-                    Rating = 4.6f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2017/05/07/08/56/spaghetti-2290873_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
+                    CourseTitle = "UI/UX Fundamentals",
+                    Instructor = "Kai Emerson",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 9, 17),
+                    Category = Category.Design,
+                    Level = Level.Beginner,
+                    Duration = new TimeOnly(2, 15),
+                    CoursePrice = 95.37,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
                 }
             },
+
             new Course
             {
                 Id = Guid.NewGuid(),
-                Publisher = "Finance School",
+                Publisher = "Bright Future",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Students = 650,
+                Students = 4131,
                 Item = new Item
                 {
-                    CourseTitle = "Personal Finance 101",
-                    Instructor = "Mary Stocks",
-                    Description = "Manage your money and grow your savings smartly.",
-                    DateCreated = new DateOnly(2024, 4, 10),
-                    Category = Category.Finance,
-                    Level = Level.Beginner,
+                    CourseTitle = "Public Speaking Mastery",
+                    Instructor = "Sage Bennett",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 5, 19),
+                    Category = Category.Business,
+                    Level = Level.Expert,
                     Duration = new TimeOnly(3, 0),
-                    CoursePrice = 14000,
-                    Rating = 4.2f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2017/01/30/20/27/finance-2020953_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
+                    CoursePrice = 30.16,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
                 }
             },
+
             new Course
             {
                 Id = Guid.NewGuid(),
-                Publisher = "CodeGuard",
+                Publisher = "Mindful Life",
                 PostedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow,
-                Students = 1900,
+                Students = 3862,
                 Item = new Item
                 {
-                    CourseTitle = "Cybersecurity Fundamentals",
-                    Instructor = "Ada Lovelace",
-                    Description = "Protect systems and data in today's digital world.",
-                    DateCreated = new DateOnly(2023, 9, 9),
+                    CourseTitle = "Basic Drawing Skills",
+                    Instructor = "Sage Bennett",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 1, 15),
+                    Category = Category.Art,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(1, 45),
+                    CoursePrice = 86.53,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1971,
+                Item = new Item
+                {
+                    CourseTitle = "Excel for Business",
+                    Instructor = "Aria Moon",
+                    Description = "Gain essential knowledge and real-world insights.",
+                    DateCreated = new DateOnly(2024, 6, 4),
+                    Category = Category.Business,
+                    Level = Level.Master,
+                    Duration = new TimeOnly(3, 15),
+                    CoursePrice = 94.9,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2515,
+                Item = new Item
+                {
+                    CourseTitle = "Digital Marketing 101",
+                    Instructor = "Riley Knox",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 2, 1),
+                    Category = Category.Marketing,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(3, 0),
+                    CoursePrice = 64.21,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4626,
+                Item = new Item
+                {
+                    CourseTitle = "Intro to Graphic Design",
+                    Instructor = "Zen Parker",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 8, 13),
+                    Category = Category.Design,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(0, 30),
+                    CoursePrice = 84.28,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4229,
+                Item = new Item
+                {
+                    CourseTitle = "Nutrition and Wellness",
+                    Instructor = "Zen Parker",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 12, 13),
+                    Category = Category.Health,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(0, 0),
+                    CoursePrice = 98.1,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1773,
+                Item = new Item
+                {
+                    CourseTitle = "iOS App Development",
+                    Instructor = "Luna Hart",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 4, 8),
+                    Category = Category.Software,
+                    Level = Level.Master,
+                    Duration = new TimeOnly(3, 45),
+                    CoursePrice = 72.74,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2413,
+                Item = new Item
+                {
+                    CourseTitle = "Android App Development",
+                    Instructor = "Kai Emerson",
+                    Description = "Explore the tools and techniques of professionals.",
+                    DateCreated = new DateOnly(2024, 5, 21),
+                    Category = Category.Software,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(0, 45),
+                    CoursePrice = 98.64,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Bright Future",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1243,
+                Item = new Item
+                {
+                    CourseTitle = "Intro to Cybersecurity",
+                    Instructor = "Luna Hart",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 1, 26),
+                    Category = Category.Cybersecurity,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(3, 30),
+                    CoursePrice = 84.19,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2558,
+                Item = new Item
+                {
+                    CourseTitle = "Blockchain Explained",
+                    Instructor = "Kai Emerson",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 1, 12),
+                    Category = Category.Software,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(1, 0),
+                    CoursePrice = 66.85,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "CodeWise",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 581,
+                Item = new Item
+                {
+                    CourseTitle = "Music Theory Basics",
+                    Instructor = "Eli Rivers",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 11, 13),
+                    Category = Category.Music,
+                    Level = Level.Master,
+                    Duration = new TimeOnly(1, 15),
+                    CoursePrice = 31.74,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "CodeWise",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2172,
+                Item = new Item
+                {
+                    CourseTitle = "Speed Reading & Memory",
+                    Instructor = "Riley Knox",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 7, 5),
+                    Category = Category.Education,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(3, 15),
+                    CoursePrice = 41.01,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1507,
+                Item = new Item
+                {
+                    CourseTitle = "Chess for Beginners",
+                    Instructor = "Jules Carter",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 11, 8),
+                    Category = Category.Gaming,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(3, 15),
+                    CoursePrice = 92.68,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 597,
+                Item = new Item
+                {
+                    CourseTitle = "French Language Basics",
+                    Instructor = "Riley Knox",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 3, 12),
+                    Category = Category.Language,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(2, 45),
+                    CoursePrice = 72.96,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "DevNest",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4709,
+                Item = new Item
+                {
+                    CourseTitle = "Career Planning",
+                    Instructor = "Sage Bennett",
+                    Description = "Discover the joy of learning at your own pace.",
+                    DateCreated = new DateOnly(2024, 1, 9),
+                    Category = Category.Business,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(2, 15),
+                    CoursePrice = 94.53,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "CodeWise",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4507,
+                Item = new Item
+                {
+                    CourseTitle = "Intro to Philosophy",
+                    Instructor = "Luna Hart",
+                    Description = "Explore the tools and techniques of professionals.",
+                    DateCreated = new DateOnly(2024, 1, 9),
+                    Category = Category.Science,
+                    Level = Level.Master,
+                    Duration = new TimeOnly(2, 30),
+                    CoursePrice = 54.3,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "DevNest",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1249,
+                Item = new Item
+                {
+                    CourseTitle = "3D Modeling Basics",
+                    Instructor = "Nova James",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 9, 13),
+                    Category = Category.Design,
+                    Level = Level.Apprentice,
+                    Duration = new TimeOnly(0, 0),
+                    CoursePrice = 61.49,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Bright Future",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 3385,
+                Item = new Item
+                {
+                    CourseTitle = "Ethical Hacking Intro",
+                    Instructor = "Aria Moon",
+                    Description = "Gain essential knowledge and real-world insights.",
+                    DateCreated = new DateOnly(2024, 12, 5),
                     Category = Category.Cybersecurity,
                     Level = Level.Apprentice,
-                    Duration = new TimeOnly(4, 15),
-                    CoursePrice = 24000,
-                    Rating = 4.8f,
-                    ImageUrl = "https://cdn.pixabay.com/photo/2016/09/28/23/36/monitor-1709497_960_720.jpg",
-                    ImagePublicId = null,
-                    VideoUrl = null,
-                    VideoPublicId = null
+                    Duration = new TimeOnly(3, 30),
+                    CoursePrice = 86.19,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Mindful Life",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4401,
+                Item = new Item
+                {
+                    CourseTitle = "Beginner Cooking Skills",
+                    Instructor = "Sage Bennett",
+                    Description = "Learn by doing with hands-on activities.",
+                    DateCreated = new DateOnly(2024, 2, 12),
+                    Category = Category.Cooking,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(2, 45),
+                    CoursePrice = 80.6,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "SkillForge",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 4613,
+                Item = new Item
+                {
+                    CourseTitle = "Web Development Bootcamp",
+                    Instructor = "Aria Moon",
+                    Description = "Build your confidence and skills in just a few hours.",
+                    DateCreated = new DateOnly(2024, 4, 16),
+                    Category = Category.Programming,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(0, 45),
+                    CoursePrice = 99.77,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Fitness Gurus",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1500,
+                Item = new Item
+                {
+                    CourseTitle = "High-Intensity Interval Training (HIIT)",
+                    Instructor = "Alex Fit",
+                    Description = "Boost your metabolism and get in shape with this intense workout.",
+                    DateCreated = new DateOnly(2024, 7, 1),
+                    Category = Category.Fitness,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(0, 45),
+                    CoursePrice = 45.00,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Legal Eagle",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 800,
+                Item = new Item
+                {
+                    CourseTitle = "Introduction to Contract Law",
+                    Instructor = "LegalMind",
+                    Description = "Understand the basics of contracts and legal agreements.",
+                    DateCreated = new DateOnly(2024, 9, 5),
+                    Category = Category.Legal,
+                    Level = Level.Beginner,
+                    Duration = new TimeOnly(2, 0),
+                    CoursePrice = 120.00,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Parenting Pros",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1100,
+                Item = new Item
+                {
+                    CourseTitle = "Positive Parenting Strategies",
+                    Instructor = "Parental Wisdom",
+                    Description = "Learn effective techniques for raising happy and resilient children.",
+                    DateCreated = new DateOnly(2024, 3, 20),
+                    Category = Category.Parenting,
+                    Level = Level.Intermediate,
+                    Duration = new TimeOnly(1, 30),
+                    CoursePrice = 65.50,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Sales Masters",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 950,
+                Item = new Item
+                {
+                    CourseTitle = "Effective Sales Techniques",
+                    Instructor = "Sales Ace",
+                    Description = "Master the art of persuasion and close more deals.",
+                    DateCreated = new DateOnly(2024, 6, 10),
+                    Category = Category.Sales,
+                    Level = Level.Expert,
+                    Duration = new TimeOnly(2, 0),
+                    CoursePrice = 110.00,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Engineering Hub",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 1800,
+                Item = new Item
+                {
+                    CourseTitle = "Introduction to Robotics",
+                    Instructor = "RoboTech",
+                    Description = "Learn the fundamentals of robotics and automation.",
+                    DateCreated = new DateOnly(2024, 11, 1),
+                    Category = Category.Engineering,
+                    Level = Level.Apprentice,
+                    Duration = new TimeOnly(3, 45),
+                    CoursePrice = 150.00,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
+                }
+            },
+            new Course
+            {
+                Id = Guid.NewGuid(),
+                Publisher = "Life Skills Academy",
+                PostedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                Students = 2800,
+                Item = new Item
+                {
+                    CourseTitle = "Mindful Living Practices",
+                    Instructor = "Serenity Guide",
+                    Description = "Cultivate inner peace and well-being through daily mindful practices.",
+                    DateCreated = new DateOnly(2024, 9, 28),
+                    Category = Category.Lifestyle,
+                    Level = Level.Beginner,
+                    Duration = new TimeOnly(1, 30),
+                    CoursePrice = 49.99,
+                    ImageUrl = "https://res.cloudinary.com/dtbhkctvp/image/upload/v1752231634/course-castle/images/qe2uezbzv7ddsztwpflw.png",
+                    ImagePublicId = "course-castle/images/qe2uezbzv7ddsztwpflw",
+                    VideoUrl = "https://res.cloudinary.com/dtbhkctvp/video/upload/v1752230511/course-castle/videos/kao5ek3ajx1uvuc6hnxg.mp4",
+                    VideoPublicId = "course-castle/videos/c4lptbgxf5d9lmlicn56"
                 }
             }
-
         };
-
         context.AddRange(courses);
 
         context.SaveChanges();

@@ -82,6 +82,12 @@ public class CoursesController : ControllerBase
                 videoUrl = videoResult.SecureUrl.ToString();
                 videoPublicId = videoResult.PublicId;
                 Console.WriteLine($"Video uploaded: {videoUrl}");
+
+                if (videoResult.Duration > 0)
+                {
+                    var duration = TimeSpan.FromSeconds(videoResult.Duration);
+                    courseDto.Duration = new TimeOnly(duration.Hours, duration.Minutes, duration.Seconds);
+                }
             }
 
             var course = _mapper.Map<Course>(courseDto);
@@ -127,9 +133,10 @@ public class CoursesController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCourse(Guid id, UpdateCourseDto updateCourseDto)
+    public async Task<ActionResult> UpdateCourse(Guid id, [FromForm] UpdateCourseDto updateCourseDto)
     {
-        var course = await _context.Courses.Include(x => x.Item)
+        var course = await _context.Courses
+            .Include(x => x.Item)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (course == null) return NotFound();
@@ -139,18 +146,72 @@ public class CoursesController : ControllerBase
             return Forbid();
         }
 
-        course.Item.CourseTitle = updateCourseDto.CourseTitle ?? course.Item.CourseTitle;
-        course.Item.Instructor = updateCourseDto.Instructor ?? course.Item.Instructor;
-        course.Item.Description = updateCourseDto.Description ?? course.Item.Description;
-        course.Item.CoursePrice = updateCourseDto.CoursePrice ?? course.Item.CoursePrice;
+        if (!string.IsNullOrWhiteSpace(updateCourseDto.CourseTitle))
+            course.Item.CourseTitle = updateCourseDto.CourseTitle;
+        if (!string.IsNullOrWhiteSpace(updateCourseDto.Instructor))
+            course.Item.Instructor = updateCourseDto.Instructor;
+        if (!string.IsNullOrWhiteSpace(updateCourseDto.Description))
+            course.Item.Description = updateCourseDto.Description;
+        if (updateCourseDto.CoursePrice.HasValue)
+            course.Item.CoursePrice = updateCourseDto.CoursePrice.Value;
+
+        if (updateCourseDto.ImageFile != null)
+        {
+            if (!string.IsNullOrEmpty(course.Item.ImagePublicId))
+            {
+                await _cloudinaryService.DeleteFileAsync(course.Item.ImagePublicId);
+                Console.WriteLine($"Old image deleted: {course.Item.ImagePublicId}");
+            }
+
+            var imageUploadResult = await _cloudinaryService.UploadImageAsync(updateCourseDto.ImageFile);
+            if (imageUploadResult == null || string.IsNullOrEmpty(imageUploadResult.SecureUrl.ToString()))
+            {
+                return StatusCode(500, "Failed to upload new image.");
+            }
+            course.Item.ImageUrl = imageUploadResult.SecureUrl.ToString();
+            course.Item.ImagePublicId = imageUploadResult.PublicId;
+            Console.WriteLine($"New image uploaded: {course.Item.ImageUrl}");
+        }
+
+        if (updateCourseDto.VideoFile != null)
+        {
+            if (!string.IsNullOrEmpty(course.Item.VideoPublicId))
+            {
+                await _cloudinaryService.DeleteFileAsync(course.Item.VideoPublicId);
+                Console.WriteLine($"Old video deleted: {course.Item.VideoPublicId}");
+            }
+
+            var videoUploadResult = await _cloudinaryService.UploadVideoAsync(updateCourseDto.VideoFile);
+            if (videoUploadResult == null || string.IsNullOrEmpty(videoUploadResult.SecureUrl.ToString()))
+            {
+                return StatusCode(500, "Failed to upload new video.");
+            }
+            course.Item.VideoUrl = videoUploadResult.SecureUrl.ToString();
+            course.Item.VideoPublicId = videoUploadResult.PublicId;
+            Console.WriteLine($"New video uploaded: {course.Item.VideoUrl}");
+
+            if (videoUploadResult.Duration > 0)
+            {
+                var duration = TimeSpan.FromSeconds(videoUploadResult.Duration);
+                course.Item.Duration = new TimeOnly(duration.Hours, duration.Minutes, duration.Seconds);
+            }
+        }
 
         await _publishEndpoint.Publish(_mapper.Map<CourseUpdated>(course));
+        Console.WriteLine($"CourseUpdated message published for Course ID: {course.Id}");
 
         var result = await _context.SaveChangesAsync() > 0;
 
-        if (result) return Ok();
-
-        return BadRequest("Could not save changes");
+        if (result)
+        {
+            Console.WriteLine($"Changes saved to database for Course ID: {course.Id}");
+            return Ok();
+        }
+        else
+        {
+            Console.WriteLine($"Failed to save changes to database for Course ID: {course.Id}");
+            return BadRequest("Could not save changes");
+        }
     }
 
     [Authorize]
@@ -253,7 +314,13 @@ public class CoursesController : ControllerBase
 
         if (userCourse == null)
         {
-            return NotFound("No relationship found between user and course");
+            return Ok(new UserCourseStatusDto
+            {
+                CourseId = id,
+                UserId = userId,
+                Ownership = "None",
+                Status = "None"
+            });
         }
 
         var result = new UserCourseStatusDto
@@ -340,5 +407,91 @@ public class CoursesController : ControllerBase
 
         return Ok("Course finished, congratulations!");
     }
-    
+
+    [HttpGet("{id}/reviews")]
+    public async Task<ActionResult<object>> GetReviews(Guid id)
+    {
+        var course = await _context.Courses
+            .Include(c => c.Reviews)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (course == null)
+            return NotFound();
+
+        var reviews = course.Reviews
+            .Select(r => new ReviewDto
+            {
+                Id = r.Id,
+                UserId = r.UserId,
+                CourseId = r.CourseId,
+                UserName = r.UserName,
+                Rating = r.Rating,
+                Comment = r.Comment,
+                CreatedAt = r.CreatedAt
+            })
+            .ToList();
+
+        double avgRating = reviews.Any() ? Math.Round(reviews.Average(r => r.Rating), 2) : 0;
+
+        return Ok(new { reviews, averageRating = avgRating });
+    }
+
+    [Authorize]
+    [HttpPost("{id}/reviews")]
+    public async Task<ActionResult> AddReview(Guid id, [FromBody] CreateReviewDto dto)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userName = User.Identity.Name;
+
+        var userCourse = await _context.UserCourses
+            .FirstOrDefaultAsync(uc => uc.UserId == userId && uc.CourseId == id && uc.Ownership == Ownership.Owned);
+
+        if (userCourse == null)
+            return Forbid("You can only review courses you own.");
+
+        var course = await _context.Courses
+            .Include(c => c.Item)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (course == null)
+            return NotFound();
+
+        var review = new Review
+        {
+            Id = Guid.NewGuid(),
+            CourseId = id,
+            UserId = userId,
+            UserName = userName,
+            Rating = dto.Rating,
+            Comment = dto.Comment,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Reviews.Add(review);
+
+        var existingRatings = await _context.Reviews
+            .Where(r => r.CourseId == id)
+            .Select(r => r.Rating)
+            .ToListAsync();
+
+        existingRatings.Add(dto.Rating);
+        var newAverage = Math.Round(existingRatings.Average(), 2);
+
+        course.Rating = newAverage;
+
+        var courseUpdated = _mapper.Map<CourseUpdated>(course);
+        await _publishEndpoint.Publish(courseUpdated);
+        Console.WriteLine("Published CourseUpdated");
+
+        var result = await _context.SaveChangesAsync();
+
+        if (result == 0)
+            return BadRequest("Could not save review or rating.");
+
+        return Ok("Review added and rating updated.");
+    }
+
 }
+
+
+

@@ -37,6 +37,7 @@ public class PaymentsController : ControllerBase
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.Identity.Name;
         var userEmail = User.FindFirst(ClaimTypes.Email)?.Value ?? User.FindFirst("email")?.Value;
+        var userName = User.FindFirst("name")?.Value ?? User.FindFirst(ClaimTypes.Name)?.Value ?? User.Identity.Name;
 
         var course = await GetCourseFromCourseService(dto.CourseId);
         if (course == null)
@@ -46,9 +47,11 @@ public class PaymentsController : ControllerBase
             .FirstOrDefaultAsync(p => p.UserId == userId && p.CourseId == dto.CourseId && p.Status == PaymentStatus.Succeeded);
         if (existingPayment != null)
             return BadRequest(new { message = "You already own this course" });
+        
+        var ammountInCents = (int)(course.CoursePrice * 100);
 
         var paymentIntent = await _stripeService.CreatePaymentIntentAsync(
-            course.CoursePrice,
+            ammountInCents,
             userId,
             course.CourseTitle,
             course.Instructor,
@@ -60,6 +63,8 @@ public class PaymentsController : ControllerBase
         {
             Id = Guid.NewGuid(),
             UserId = userId,
+            CustomerEmail = userEmail,
+            UserName = userName,
             CourseId = course.Id,
             StripePaymentIntentId = paymentIntent.Id,
             Amount = course.CoursePrice,
@@ -67,7 +72,6 @@ public class PaymentsController : ControllerBase
             Status = PaymentStatus.Pending,
             CourseTitle = course.CourseTitle,
             Instructor = course.Instructor,
-            CustomerEmail = userEmail ?? ""
         };
 
         _context.Payments.Add(payment);

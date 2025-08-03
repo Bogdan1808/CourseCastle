@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Zaqkt5ZtAW8=",
+  "dgSpecHash": "9VKrn09EBnY=",
   "success": true,
   "projectFilePath": "C:\\Licenta\\CourseCastle\\src\\PaymentService\\PaymentService.csproj",
   "expectedPackageFiles": [
@@ -49,6 +49,8 @@
     "C:\\Users\\bnpas\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512",
     "C:\\Users\\bnpas\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.10\\npgsql.entityframeworkcore.postgresql.8.0.10.nupkg.sha512",
     "C:\\Users\\bnpas\\.nuget\\packages\\rabbitmq.client\\6.5.0\\rabbitmq.client.6.5.0.nupkg.sha512",
+    "C:\\Users\\bnpas\\.nuget\\packages\\sendgrid\\9.29.3\\sendgrid.9.29.3.nupkg.sha512",
+    "C:\\Users\\bnpas\\.nuget\\packages\\starkbank-ecdsa\\1.3.3\\starkbank-ecdsa.1.3.3.nupkg.sha512",
     "C:\\Users\\bnpas\\.nuget\\packages\\stripe.net\\48.2.0\\stripe.net.48.2.0.nupkg.sha512",
     "C:\\Users\\bnpas\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\bnpas\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",

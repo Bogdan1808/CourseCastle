@@ -14,7 +14,7 @@ export default function CourseThumbnail({ imageUrl }: CourseCardProps) {
 
   return (
     <Image
-     src={"/images/CCplaceholder.png"}
+     src={imageUrl ?? "/images/CCplaceholder.png"}
      alt='Course Thumbnail'
      fill
      className={

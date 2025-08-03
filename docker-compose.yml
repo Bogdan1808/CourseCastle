@@ -99,6 +99,7 @@ services:
       - CourseServiceUrl=http://course-svc
       - IdentityServiceUrl=http://identity-svc
       - NotificationUrl=http://gateway-svc
+      - Mailing__ApiKey=${MAILING_API_KEY}
     ports:
       - 7003:80
     depends_on:

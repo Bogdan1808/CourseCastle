@@ -1,118 +1,213 @@
 'use client'
 
-import { useRef, useState } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
+import React, { useRef, useState, useEffect } from "react";
+import { Maximize2, Volume2, VolumeX, Pause, Play, RotateCcw, RotateCw } from "lucide-react";
+import { startCourse, finishCourse } from "@/app/actions/courseActions";
 
-type Props = {
-    videoUrl: string;
+interface VideoPlayerProps {
+  src: string;
+  poster?: string;
+  courseId: string;
+  status: string;
+  onStatusChange?: (newStatus: string) => void;
 }
 
-export default function VideoPlayer({ videoUrl }: Props) {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
-    const [progress, setProgress] = useState(0);
+export default function VideoPlayer({ src, poster, courseId, status, onStatusChange }: VideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [hasStarted, setHasStarted] = useState(status === "Started" || status === "Finished");
+  const [hasFinished, setHasFinished] = useState(status === "Finished");
 
-    const togglePlay = () => {
-        if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
-                videoRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
+  useEffect(() => {
+    setHasStarted(status === "Started" || status === "Finished");
+    setHasFinished(status === "Finished");
+  }, [status]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = async () => {
+      setCurrentTime(video.currentTime);
+
+      if (
+        !hasFinished &&
+        video.duration > 0 &&
+        video.currentTime / video.duration >= 0.9
+      ) {
+        const res = await finishCourse(courseId);
+        if (res.success) {
+          setHasFinished(true);
+          onStatusChange?.("Finished");
         }
+      }
     };
 
-    const toggleMute = () => {
-        if (videoRef.current) {
-            videoRef.current.muted = !isMuted;
-            setIsMuted(!isMuted);
-        }
+    const handleLoadedMetadata = () => setDuration(video.duration);
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+      setDuration(video.duration);
+    }
+
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
     };
+  }, [hasFinished, courseId, onStatusChange]);
 
-    const handleTimeUpdate = () => {
-        if (videoRef.current) {
-            const progress = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-            setProgress(progress);
-        }
-    };
+  const handlePlay = async () => {
+    const video = videoRef.current;
+    if (!video) return;
 
-    const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (videoRef.current) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            const newTime = (clickX / width) * videoRef.current.duration;
-            videoRef.current.currentTime = newTime;
-        }
-    };
+    video.play().catch(() => {});
 
-    return (
-        <div className="relative group">
-            <video
-                ref={videoRef}
-                className="w-full aspect-video"
-                onTimeUpdate={handleTimeUpdate}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-            >
-                <source src={videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+    if (!hasStarted && !hasFinished) {
+      const res = await startCourse(courseId);
+      if (res.success) {
+        setHasStarted(true);
+        onStatusChange?.("Started");
+      }
+    }
+  };
 
-            {/* Controls Overlay */}
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <button
-                    onClick={togglePlay}
-                    className="p-4 bg-white/20 rounded-full hover:bg-white/30 transition"
-                >
-                    {isPlaying ? (
-                        <Pause className="w-8 h-8 text-white" />
-                    ) : (
-                        <Play className="w-8 h-8 text-white" />
-                    )}
-                </button>
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      handlePlay();
+    } else {
+      video.pause();
+    }
+  };  
+
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const video = videoRef.current;
+    if (!video) return;
+    const time = Number(e.target.value);
+    video.currentTime = time;
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const video = videoRef.current;
+    if (!video) return;
+    const vol = Number(e.target.value);
+    video.volume = vol;
+    setVolume(vol);
+    setMuted(vol === 0);
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !muted;
+    setMuted(!muted);
+    if (!muted && volume === 0) {
+      setVolume(0.5);
+      video.volume = 0.5;
+    }
+  };
+
+  const skip = (seconds: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    let newTime = video.currentTime + seconds;
+    newTime = Math.max(0, Math.min(newTime, video.duration || 0));
+    video.currentTime = newTime;
+  };
+
+  const toggleFullscreen = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if ((video as any).webkitRequestFullscreen) {
+        (video as any).webkitRequestFullscreen();
+      } else if ((video as any).msRequestFullscreen) {
+        (video as any).msRequestFullscreen();
+      }
+    }
+  };
+
+  const formatTime = (time: number) => {
+    if (!Number.isFinite(time)) return "0:00";
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <div className="flex justify-center items-center w-full py-6">
+      <div className="w-full max-w-3xl bg-black rounded-xl overflow-hidden shadow-2xl border border-stone-800">
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          className="w-full bg-black"
+          onClick={togglePlay}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          tabIndex={0}
+        />
+        <div className="flex flex-col gap-2 bg-stone-950/95 px-4 py-3 rounded-b-xl">
+          {/* Progress Bar */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-stone-300 font-mono w-10 text-right">{formatTime(currentTime)}</span>
+            <input
+              type="range"
+              min={0}
+              max={duration > 0 ? duration : 0}
+              step={0.01}
+              value={currentTime}
+              onChange={handleProgressChange}
+              className="flex-1 accent-amber-400 h-1"
+              disabled={duration === 0}
+            />
+            <span className="text-xs text-stone-300 font-mono w-10">{formatTime(duration)}</span>
+          </div>
+          {/* Controls */}
+          <div className="flex items-center gap-4 justify-between mt-1">
+            <div className="flex items-center gap-2">
+              <button onClick={() => skip(-5)} title="Back 5 seconds" className="p-2 rounded hover:bg-stone-800 focus:bg-stone-800 text-amber-300 hover:text-amber-400 focus:text-amber-400 transition">
+                <RotateCcw size={22} />
+              </button>
+              <button onClick={togglePlay} title={playing ? "Pause" : "Play"} className="p-2 rounded hover:bg-stone-800 focus:bg-stone-800 text-amber-300 hover:text-amber-400 focus:text-amber-400 transition">
+                {playing ? <Pause size={22} /> : <Play size={22} />}
+              </button>
+              <button onClick={() => skip(5)} title="Forward 5 seconds" className="p-2 rounded hover:bg-stone-800 focus:bg-stone-800 text-amber-300 hover:text-amber-400 focus:text-amber-400 transition">
+                <RotateCw size={22} />
+              </button>
             </div>
-
-            {/* Bottom Controls */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {/* Progress Bar */}
-                <div 
-                    className="w-full h-1 bg-white/30 rounded-full cursor-pointer mb-3"
-                    onClick={handleProgressClick}
-                >
-                    <div 
-                        className="h-full bg-amber-400 rounded-full transition-all duration-150"
-                        style={{ width: `${progress}%` }}
-                    />
-                </div>
-
-                {/* Control Buttons */}
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <button onClick={togglePlay} className="p-2 hover:bg-white/20 rounded">
-                            {isPlaying ? (
-                                <Pause className="w-4 h-4 text-white" />
-                            ) : (
-                                <Play className="w-4 h-4 text-white" />
-                            )}
-                        </button>
-                        
-                        <button onClick={toggleMute} className="p-2 hover:bg-white/20 rounded">
-                            {isMuted ? (
-                                <VolumeX className="w-4 h-4 text-white" />
-                            ) : (
-                                <Volume2 className="w-4 h-4 text-white" />
-                            )}
-                        </button>
-                    </div>
-
-                    <button className="p-2 hover:bg-white/20 rounded">
-                        <Maximize className="w-4 h-4 text-white" />
-                    </button>
-                </div>
+            <div className="flex items-center gap-2">
+              <button onClick={toggleMute} title={muted ? "Unmute" : "Mute"} className="p-2 rounded hover:bg-stone-800 focus:bg-stone-800 text-amber-300 hover:text-amber-400 focus:text-amber-400 transition">
+                {muted || volume === 0 ? <VolumeX size={22} /> : <Volume2 size={22} />}
+              </button>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={handleVolumeChange}
+                className="accent-amber-400"
+                style={{ width: 80 }}
+              />
             </div>
+            <button onClick={toggleFullscreen} title="Fullscreen" className="p-2 rounded hover:bg-stone-800 focus:bg-stone-800 text-amber-300 hover:text-amber-400 focus:text-amber-400 transition">
+              <Maximize2 size={22} />
+            </button>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

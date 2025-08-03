@@ -124,3 +124,5 @@ C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\MassTransit.RabbitMq
 C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\RabbitMQ.Client.dll
 C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\Contracts.dll
 C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\Contracts.pdb
+C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\SendGrid.dll
+C:\Licenta\CourseCastle\src\PaymentService\bin\Debug\net8.0\StarkbankEcdsa.dll

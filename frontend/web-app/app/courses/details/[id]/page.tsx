@@ -12,21 +12,22 @@ import EditButton from './EditButton';
 import { getCurrentUser } from '@/app/actions/authActions';
 import WishlistButton from './WishlistButton';
 import DeleteButton from './DeleteButton';
+import CourseReviews from "@/components/CourseReviews";
+import EnrollNowButton from "./EnrollNowButton";
+import { Footer } from '@/components/Footer';
 
 const formatDuration = (duration: string) => {
-  const [hours, minutes] = duration.split(":")
-  const totalHours = Number.parseInt(hours)
-  const totalMinutes = Number.parseInt(minutes)
+  const [hours, minutes, seconds] = duration.split(":");
+  const totalHours = Number.parseInt(hours);
+  const totalMinutes = Number.parseInt(minutes);
+  const totalSeconds = Number.parseInt(seconds);
 
-  if (totalHours > 0) {
-    return `${totalHours}h ${totalMinutes}m`
-  }
-  return `${totalMinutes}m`
-}
-
-const formatPrice = (price: number) => {
-  return `${(price / 100).toFixed(2)}`
-}
+  let result = "";
+  if (totalHours > 0) result += `${totalHours}h `;
+  if (totalMinutes > 0 || totalHours > 0) result += `${totalMinutes}m `;
+  result += `${totalSeconds}s`;
+  return result.trim();
+};
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -78,7 +79,6 @@ return (
       <div className="relative z-10">
         <Navbar />
 
-        {/* Course Header */}
         <div className="pt-24 pb-8 bg-stone-900/80 text-white border-b border-stone-700">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-2 text-sm mb-4">
@@ -123,10 +123,8 @@ return (
           </div>
         </div>
 
-        {/* Main Content with Fixed Sidebar */}
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main Content Area */}
             <div className="lg:w-2/3">
               <Tabs defaultValue="overview" className="w-full">
                 <TabsList className="grid w-full md:w-auto grid-cols-2 mb-8 bg-stone-800 p-1 border border-stone-700">
@@ -146,7 +144,7 @@ return (
 
                 <TabsContent
                   value="overview"
-                  className="bg-stone-800/80 rounded-lg shadow-sm border border-stone-700 p-6 text-white"
+                  className="bg-stone-800/90 rounded-lg shadow-sm border border-stone-700 p-6 text-white"
                 >
                   <h2 className="text-2xl font-bold mb-6 text-amber-300">Course Overview</h2>
                   <div className="prose prose-invert max-w-none">
@@ -178,7 +176,7 @@ return (
 
                 <TabsContent
                   value="details"
-                  className="bg-stone-800/80 rounded-lg shadow-sm border border-stone-700 p-6 text-white"
+                  className="bg-stone-800/90 rounded-lg shadow-sm border border-stone-700 p-6 text-white"
                 >
                   <h2 className="text-2xl font-bold mb-6 text-amber-300">Course Details</h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -231,24 +229,27 @@ return (
                   </div>
                 </TabsContent>
               </Tabs>
+
+              <CourseReviews courseId={course.id} owned={course.ownership === "Owned"} currentUsername={user?.username || null} />
             </div>
 
-            {/* Fixed Sidebar */}
             <div className="lg:w-1/3">
               <div className="sticky top-28">
                 <div className="bg-stone-800/90 rounded-lg shadow-md p-6 border-2 border-stone-700 backdrop-blur-sm">
                   <div className="relative aspect-video mb-6 rounded-md overflow-hidden">
                     <Image
-                      src="/images/CCplaceholder.png"
+                      src={course.imageUrl ?? "/images/CCplaceholder.png"}
                       alt={course.courseTitle}
                       fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
                       className="object-cover"
+                      priority
                     />
                   </div>
 
                   <div className="flex items-center mb-4">
                     <Euro className="h-6 w-6 text-amber-400 mr-2" />
-                    <span className="text-3xl font-bold text-amber-300">{formatPrice(course.coursePrice)}</span>
+                    <span className="text-3xl font-bold text-amber-300">{course.coursePrice}</span>
                   </div>
 
 
@@ -258,19 +259,19 @@ return (
                       <DeleteButton id={course.id} />
                     </>
                   ) : course.ownership === "Owned" && course.status === "Started" ? (
-                    <Link href={`/learn/${course.id}`}>
+                    <Link href={`/courses/learn/${course.id}`}>
                       <Button className="w-full btn-medieval mb-3 py-6 text-lg">Continue Learning</Button>
                     </Link>
                   ) : course.ownership === "Owned" ? (
-                    <Link href={`/learn/${course.id}`}>
+                    <Link href={`/courses/learn/${course.id}`}>
                       <Button className="w-full btn-medieval mb-3 py-6 text-lg">Start Learning</Button>
                     </Link>
                   ) : (
                     <div className="space-y-3">
-                      <Button className="w-full btn-medieval py-6 text-lg">Enroll Now</Button>
-                      <WishlistButton 
-                        courseId={course.id} 
-                        isWishlisted={course.ownership === "Wishlisted"} 
+                      <EnrollNowButton courseId={course.id} />
+                      <WishlistButton
+                        courseId={course.id}
+                        isWishlisted={course.ownership === "Wishlisted"}
                       />
                     </div>
                   )}
@@ -302,7 +303,6 @@ return (
                   </div>
                 </div>
 
-                {/* Course Stats Card */}
                 <div className="mt-6 bg-stone-800/90 rounded-lg shadow-md p-6 border-2 border-stone-700 backdrop-blur-sm">
                   <h3 className="text-xl font-bold mb-4 text-amber-300">Course Information</h3>
                   <div className="space-y-4">
@@ -313,7 +313,7 @@ return (
                     <div className="flex justify-between">
                       <span className="text-stone-400">Status:</span>
                       <Badge
-                        className={`${course.status === "Completed" ? "bg-green-600" : course.status === "Started" ? "bg-amber-600" : "bg-stone-600"}`}
+                        className={`${course.status === "Finished" ? "bg-green-600" : course.status === "Started" ? "bg-amber-600" : "bg-stone-600"}`}
                       >
                         {course.status === "NotStarted" ? "Not Started" : course.status}
                       </Badge>
@@ -331,94 +331,7 @@ return (
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="bg-stone-900/90 backdrop-blur-sm text-stone-400 py-12 border-t border-stone-700 mt-12">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Image
-                    src="/images/amber-castle.png"
-                    alt="Castle Icon"
-                    width={24}
-                    height={24}
-                    className="h-6 w-6"
-                  />
-                  <span className="text-lg font-bold text-amber-300 pixel-text">CourseCastle</span>
-                </div>
-                <p className="mb-4">Empowering learners with knowledge since the digital middle ages.</p>
-              </div>
-
-              <div>
-                <h3 className="text-amber-300 font-semibold mb-4">Explore</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/courses" className="hover:text-amber-400 transition-colors">
-                      All Courses
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/instructors" className="hover:text-amber-400 transition-colors">
-                      Instructors
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/pricing" className="hover:text-amber-400 transition-colors">
-                      Pricing
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-amber-300 font-semibold mb-4">Company</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/about" className="hover:text-amber-400 transition-colors">
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/careers" className="hover:text-amber-400 transition-colors">
-                      Careers
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="hover:text-amber-400 transition-colors">
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-amber-300 font-semibold mb-4">Legal</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/terms" className="hover:text-amber-400 transition-colors">
-                      Terms of Service
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/privacy" className="hover:text-amber-400 transition-colors">
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/cookies" className="hover:text-amber-400 transition-colors">
-                      Cookie Policy
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-stone-700 mt-8 pt-8 text-center">
-              <p>&copy; {new Date().getFullYear()} CourseCastle. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+        <Footer/>
       </div>
     </div>
   )

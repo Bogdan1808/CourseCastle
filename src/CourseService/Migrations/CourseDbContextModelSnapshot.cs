@@ -37,6 +37,9 @@ namespace CourseService.Migrations
                     b.Property<string>("Publisher")
                         .HasColumnType("text");
 
+                    b.Property<double>("Rating")
+                        .HasColumnType("double precision");
+
                     b.Property<int?>("Students")
                         .HasColumnType("integer");
 
@@ -57,8 +60,8 @@ namespace CourseService.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CoursePrice")
-                        .HasColumnType("integer");
+                    b.Property<double>("CoursePrice")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("CourseTitle")
                         .HasColumnType("text");
@@ -84,9 +87,6 @@ namespace CourseService.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("integer");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
                     b.Property<string>("VideoPublicId")
                         .HasColumnType("text");
 
@@ -99,6 +99,37 @@ namespace CourseService.Migrations
                         .IsUnique();
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("CourseService.Entities.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("CourseService.Entities.UserCourse", b =>
@@ -303,6 +334,17 @@ namespace CourseService.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("CourseService.Entities.Review", b =>
+                {
+                    b.HasOne("CourseService.Entities.Course", "Course")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("CourseService.Entities.UserCourse", b =>
                 {
                     b.HasOne("CourseService.Entities.Course", "Course")
@@ -317,6 +359,8 @@ namespace CourseService.Migrations
             modelBuilder.Entity("CourseService.Entities.Course", b =>
                 {
                     b.Navigation("Item");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("UserCourses");
                 });

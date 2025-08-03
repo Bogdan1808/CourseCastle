@@ -22,3 +22,13 @@ export type Course = {
   imageUrl: string
   videoUrl: string
 }
+
+export type Review = {
+  id: string;
+  userId: string;
+  courseId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+};

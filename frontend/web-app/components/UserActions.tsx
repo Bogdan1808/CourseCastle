@@ -51,13 +51,13 @@ export default function UserActions({ user }: Props) {
         }
       }}
     >
-      <DropdownItem 
+      {/* <DropdownItem 
         icon={HiUser}
         className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
         onClick={setBuyer}
       >
         My profile
-      </DropdownItem>
+      </DropdownItem> */}
       <DropdownItem 
         icon={HiClipboardDocumentList}
         className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
@@ -73,14 +73,14 @@ export default function UserActions({ user }: Props) {
           Publish a course
         </Link>
       </DropdownItem>
-      <DropdownItem 
+      {/* <DropdownItem 
         icon={HiCog}
         className="!text-white hover:!bg-stone-700 hover:!text-amber-200 hover:!shadow-md hover:!border-l-4 hover:!border-l-amber-400 !transition-all !duration-200"
       >
         <Link href='/session'>
           Session (dev only!)
         </Link>
-      </DropdownItem>
+      </DropdownItem> */}
       <DropdownDivider className="!bg-stone-600" />
       <DropdownItem 
         icon={AiOutlineLogout} 

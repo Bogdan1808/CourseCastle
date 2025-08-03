@@ -18,7 +18,7 @@ public class CourseUpdatedConsumer : IConsumer<CourseUpdated>
 
     public async Task Consume(ConsumeContext<CourseUpdated> context)
     {   
-        Console.WriteLine("---> Consuming course uodated: " + context.Message.Id);
+        Console.WriteLine("---> Consuming course updated: " + context.Message.Id);
 
         var item = _mapper.Map<Item>(context.Message);
 
@@ -30,7 +30,9 @@ public class CourseUpdatedConsumer : IConsumer<CourseUpdated>
                 x.Description,
                 x.CoursePrice,
                 x.Level,
-                x.Instructor
+                x.Instructor,
+                x.Rating,
+                x.Students,
             }, item)
             .ExecuteAsync();
 

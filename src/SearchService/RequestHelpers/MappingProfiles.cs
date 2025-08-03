@@ -11,6 +11,5 @@ public class MappingProfiles : Profile
     {
         CreateMap<CoursePublished, Item>();
         CreateMap<CourseUpdated, Item>();
-
     }
 }

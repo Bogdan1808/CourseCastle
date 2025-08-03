@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<CourseDbContext>(opt =>
 {
@@ -52,7 +51,6 @@ builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseAuthentication();
 
 app.UseAuthorization();

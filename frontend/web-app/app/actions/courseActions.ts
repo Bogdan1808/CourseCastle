@@ -1,7 +1,7 @@
 'use server'
 
 import { fetchWrapper } from '@/lib/fetchWrapper';
-import { PagedResult, Course } from '@/types';
+import { PagedResult, Course, Review } from '@/types';
 import { FieldValues } from 'react-hook-form';
 
 export async function getData(query: string): Promise<PagedResult<Course>> {
@@ -23,17 +23,24 @@ export async function publishCourse(formData: FormData){
 export async function getDetailedViewData(id: string): Promise<Course & { ownership: string; status: string }> {
   const course = await fetchWrapper.get(`courses/${id}`);
 
+  let averageRating = 0;
+  try {
+    const reviewData = await fetchWrapper.get(`courses/${id}/reviews`);
+    averageRating = reviewData.averageRating;
+  } catch {}
+
   try {
     const userCourseStatus = await fetchWrapper.get(`courses/usercoursestatus/${id}`);
-    
     return {
       ...course,
+      rating: averageRating,
       ownership: userCourseStatus.ownership,
       status: userCourseStatus.status
     };
   } catch (error) {
     return {
       ...course,
+      rating: averageRating,
       ownership: "NotOwned",
       status: "NotStarted"
     };
@@ -107,4 +114,47 @@ export async function updateCourse(formData: FormData, id: string) {
 
 export async function deleteCourse(id: string) {
   return fetchWrapper.del(`courses/${id}`);
+}
+
+export async function getOwnedCourses(): Promise<Course[]> {
+  try {
+    return await fetchWrapper.get('courses/owned');
+  } catch (error) {
+    console.error('Error fetching owned courses:', error);
+    return [];
+  }
+}
+
+export async function startCourse(courseId: string): Promise<{success: boolean, message: string}> {
+  try {
+    await fetchWrapper.put(`courses/start/${courseId}`, {});
+    return { success: true, message: 'Course started' };
+  } catch (error: any) {
+    let errorMessage = 'Failed to start course';
+    if (error?.error?.message) errorMessage = error.error.message;
+    else if (error?.message) errorMessage = error.message;
+    else if (typeof error === 'string') errorMessage = error;
+    return { success: false, message: errorMessage };
+  }
+}
+
+export async function finishCourse(courseId: string): Promise<{success: boolean, message: string}> {
+  try {
+    await fetchWrapper.put(`courses/finish/${courseId}`, {});
+    return { success: true, message: 'Course finished' };
+  } catch (error: any) {
+    let errorMessage = 'Failed to finish course';
+    if (error?.error?.message) errorMessage = error.error.message;
+    else if (error?.message) errorMessage = error.message;
+    else if (typeof error === 'string') errorMessage = error;
+    return { success: false, message: errorMessage };
+  }
+}
+
+export async function getCourseReviews(courseId: string): Promise<{ reviews: Review[]; averageRating: number }> {
+  return fetchWrapper.get(`courses/${courseId}/reviews`);
+}
+
+export async function postCourseReview(courseId: string, rating: number, comment: string) {
+  return fetchWrapper.post(`courses/${courseId}/reviews`, { rating, comment });
 }

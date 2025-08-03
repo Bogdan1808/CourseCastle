@@ -13,6 +13,7 @@ public class CourseDbContext : DbContext
 
     public DbSet<Course> Courses { get; set; }
     public DbSet<UserCourse> UserCourses { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,5 +26,10 @@ public class CourseDbContext : DbContext
             .HasOne(uc => uc.Course)
             .WithMany(c => c.UserCourses)
             .HasForeignKey(uc => uc.CourseId);
+
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.Course)
+            .WithMany(c => c.Reviews)
+            .HasForeignKey(r => r.CourseId);
     }
 }

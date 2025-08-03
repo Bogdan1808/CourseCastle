@@ -43,6 +43,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+var mailingApiKey = builder.Configuration["Mailing:ApiKey"] ?? Environment.GetEnvironmentVariable("MAILING_API_KEY");
+builder.Services.AddSingleton(new Mailing.MailingService(mailingApiKey));
+
 var app = builder.Build();
 app.UseCors("customPolicy");
 app.UseAuthentication();

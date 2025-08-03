@@ -243,3 +243,5 @@ C:\Users\bnpas\Desktop\CC backend vechi\src\CourseService\obj\Debug\net8.0\Cours
 C:\Users\bnpas\Desktop\CC backend vechi\src\CourseService\obj\Debug\net8.0\ref\CourseService.dll
 C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\CloudinaryDotNet.dll
 C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\SendGrid.dll
+C:\Licenta\CourseCastle\src\CourseService\bin\Debug\net8.0\StarkbankEcdsa.dll

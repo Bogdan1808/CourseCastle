@@ -12,20 +12,30 @@ import {
   GraduationCap,
   MapPin,
   Shield,
+  Palette,
+  Briefcase,
+  Camera,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import CourseCard from "@/components/course-card"
 import { Navbar } from "@/components/navbar"
 import { Course } from "@/types"
 import HeroSearchForm from "./HeroSearchForm"
+import { Footer } from "@/components/Footer"
 
 
 async function getData() {
-  const res = await fetch("http://localhost:6001/search" );
+  const res = await fetch("http://localhost:6001/search");
   if (!res.ok) throw new Error("Failed to fetch courses");
   return res.json();
+}
+
+// Function to fetch count for a specific category
+async function getCategoryCount(category: string) {
+  const res = await fetch(`http://localhost:6001/search?filterBy=${category}`);
+  if (!res.ok) throw new Error(`Failed to fetch count for ${category}`);
+  const data = await res.json();
+  return data.totalCount;
 }
 
 export default async function Home() {
@@ -34,12 +44,26 @@ export default async function Home() {
     .sort((a: Course, b: Course) => (b.rating ?? 0) - (a.rating ?? 0))
     .slice(0, 3);
 
+  // Fetch counts for each category concurrently
+  const [programmingCount, designCount, businessCount, photographyCount] = await Promise.all([
+    getCategoryCount("Programming"),
+    getCategoryCount("Design"),
+    getCategoryCount("Business"),
+    getCategoryCount("Photography"),
+  ]);
+
+  const categories = [
+    { icon: <Book className="h-8 w-8" />, name: "Programming", count: programmingCount },
+    { icon: <Palette className="h-8 w-8" />, name: "Design", count: designCount },
+    { icon: <Briefcase className="h-8 w-8" />, name: "Business", count: businessCount },
+    { icon: <Camera className="h-8 w-8" />, name: "Photography", count: photographyCount },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col bg-castle-wall">
       <Navbar activePage="home" />
 
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="py-28 relative text-white">
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
           <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/70 to-transparent"></div>
@@ -55,7 +79,7 @@ export default async function Home() {
                 </p>
                 <HeroSearchForm />
               </div>
-              <div className="md:w-1/2 relative">
+              <div className="md:w-1/2 relative flex justify-center md:justify-end px-4">
                 <div className="image-frame inline-block relative">
                   <Image
                     src="/images/castle-landscape.png"
@@ -65,7 +89,6 @@ export default async function Home() {
                     className="block"
                   />
 
-                  {/* Learn Now sticker positioned on the image */}
                   <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-stone-900/90 rounded-full flex items-center justify-center p-2 rotate-12 border-4 border-amber-400 z-10">
                     <div className="text-center">
                       <div className="text-amber-300 font-bold text-sm">Learn Now</div>
@@ -78,7 +101,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Categories Section */}
         <section className="py-16 bg-stone-900/50 backdrop-blur-sm">
           <div className="container mx-auto px-4">
             <div className="mb-10 text-center">
@@ -89,12 +111,7 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { icon: <Book className="h-8 w-8" />, name: "Academic Studies", count: 142 },
-                { icon: <Sword className="h-8 w-8" />, name: "Skill Mastery", count: 89 },
-                { icon: <Crown className="h-8 w-8" />, name: "Leadership", count: 64 },
-                { icon: <Shield className="h-8 w-8" />, name: "Self Defense", count: 37 },
-              ].map((category, index) => (
+              {categories.map((category, index) => (
                 <div
                   key={index}
                   className="flex flex-col items-center p-6 bg-stone-800/90 border-2 border-stone-700 rounded-lg shadow-lg hover:shadow-xl transition-shadow torch-light"
@@ -108,7 +125,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Learning Journey Section */}
         <section className="py-20 bg-stone-900/60 backdrop-blur-sm border-y border-stone-700">
           <div className="container mx-auto px-4">
             <div className="mb-12 text-center">
@@ -158,254 +174,13 @@ export default async function Home() {
             </div>
 
             <div className="mt-12 text-center">
-              <Button className="btn-medieval px-8 py-6 text-lg">Begin Your Journey</Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Courses */}
-        <section className="py-16 bg-stone-900/70 backdrop-blur-sm">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center mb-10">
-              <h2 className="text-3xl font-bold text-amber-300 pixel-text">Featured Courses</h2>
               <Link href="/courses">
-                <Button
-                  variant="outline"
-                  className="border-amber-500 bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-white font-semibold"
-                >
-                  View All Courses
-                </Button>
-              </Link>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredCourses.map((course: Course) => (
-                <CourseCard key={course.id} course={course} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Kingdom Stats Section */}
-        <section className="py-16 bg-stone-900/50 backdrop-blur-sm border-y border-stone-700">
-          <div className="container mx-auto px-4">
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-amber-300 pixel-text">The Kingdom in Numbers</h2>
-              <p className="text-stone-300 max-w-2xl mx-auto">
-                Join thousands of learners who have already discovered the power of CourseCastle.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                { value: "10K+", label: "Students", icon: <Users className="h-8 w-8" /> },
-                { value: "500+", label: "Courses", icon: <Book className="h-8 w-8" /> },
-                { value: "150+", label: "Instructors", icon: <Crown className="h-8 w-8" /> },
-                { value: "95%", label: "Satisfaction", icon: <Star className="h-8 w-8" /> },
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  className="p-6 bg-stone-800/90 border-2 border-stone-700 rounded-lg shadow-lg text-center"
-                >
-                  <div className="p-3 rounded-full bg-amber-300/20 text-amber-400 mx-auto mb-4 w-16 h-16 flex items-center justify-center">
-                    {stat.icon}
-                  </div>
-                  <div className="text-3xl font-bold text-amber-300 mb-2">{stat.value}</div>
-                  <p className="text-stone-300">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        {/* <section className="py-20 bg-stone-900/60 backdrop-blur-sm">
-          <div className="container mx-auto px-4">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-amber-300 pixel-text">Tales from Our Students</h2>
-              <p className="text-stone-300 max-w-2xl mx-auto">
-                Hear what our noble learners have to say about their journey with CourseCastle.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  quote:
-                    "The courses at CourseCastle have transformed my skills. I've gone from a mere squire to a knight of knowledge in just months!",
-                  name: "Sir Learnalot",
-                  title: "Master Craftsman",
-                  image: "/placeholder.svg?height=100&width=100",
-                },
-                {
-                  quote:
-                    "Never have I encountered such engaging instructors and well-structured lessons. The kingdom's finest academy, without doubt!",
-                  name: "Lady Wisdom",
-                  title: "Royal Advisor",
-                  image: "/placeholder.svg?height=100&width=100",
-                },
-                {
-                  quote:
-                    "From the comfort of my own castle, I've acquired skills that have advanced my position in the royal court. Eternally grateful!",
-                  name: "Duke Progress",
-                  title: "Court Wizard",
-                  image: "/placeholder.svg?height=100&width=100",
-                },
-              ].map((testimonial, index) => (
-                <div
-                  key={index}
-                  className="p-8 bg-stone-800/90 border-2 border-stone-700 rounded-lg shadow-lg relative"
-                >
-                  <div className="absolute -top-5 -left-5 text-amber-400">
-                    <MessageSquareQuote className="h-10 w-10" />
-                  </div>
-                  <p className="text-stone-300 mb-6 italic">"{testimonial.quote}"</p>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-amber-400">
-                      <Image
-                        src={testimonial.image || "/placeholder.svg"}
-                        alt={testimonial.name}
-                        width={48}
-                        height={48}
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-amber-200">{testimonial.name}</div>
-                      <div className="text-sm text-stone-400">{testimonial.title}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-stone-900/70 backdrop-blur-sm border-y border-stone-700">
-          <div className="container mx-auto px-4">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-amber-300 pixel-text">Masters of the Craft</h2>
-              <p className="text-stone-300 max-w-2xl mx-auto">
-                Learn from the realm's most distinguished instructors, each a master in their field.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                {
-                  name: "Sir CodeALot",
-                  specialty: "Programming Wizard",
-                  courses: 12,
-                  students: 3500,
-                  image: "/placeholder.svg?height=200&width=200",
-                },
-                {
-                  name: "Lady Stonecraft",
-                  specialty: "Architecture Sage",
-                  courses: 8,
-                  students: 2100,
-                  image: "/placeholder.svg?height=200&width=200",
-                },
-                {
-                  name: "Duke DataWise",
-                  specialty: "Data Sorcerer",
-                  courses: 15,
-                  students: 4200,
-                  image: "/placeholder.svg?height=200&width=200",
-                },
-                {
-                  name: "Countess Creative",
-                  specialty: "Design Enchantress",
-                  courses: 10,
-                  students: 2800,
-                  image: "/placeholder.svg?height=200&width=200",
-                },
-              ].map((instructor, index) => (
-                <div
-                  key={index}
-                  className="bg-stone-800/90 border-2 border-stone-700 rounded-lg shadow-lg overflow-hidden group"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={instructor.image || "/placeholder.svg"}
-                      alt={instructor.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-xl font-semibold text-amber-300">{instructor.name}</h3>
-                      <p className="text-stone-300 text-sm">{instructor.specialty}</p>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between text-stone-300 mb-4">
-                      <div className="flex items-center">
-                        <ScrollText className="h-4 w-4 mr-1 text-amber-400" />
-                        <span>{instructor.courses} courses</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1 text-amber-400" />
-                        <span>{instructor.students.toLocaleString()} students</span>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full border-amber-500 text-amber-300 hover:bg-amber-500 hover:text-stone-900"
-                    >
-                      View Profile
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 text-center">
-              <Link href="/instructors">
-                <Button
-                  variant="outline"
-                  className="border-amber-500 bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-white font-semibold px-8 py-4"
-                >
-                  Meet All Instructors
-                </Button>
+                <Button className="btn-medieval px-8 py-6 text-lg">Begin Your Journey</Button>
               </Link>
             </div>
           </div>
         </section>
 
-        <section className="py-16 bg-stone-900/50 backdrop-blur-sm">
-          <div className="container mx-auto px-4">
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold mb-4 text-amber-300 pixel-text">Earn Royal Achievements</h2>
-              <p className="text-stone-300 max-w-2xl mx-auto">
-                Collect badges and certificates as you progress through your learning journey.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {[
-                { name: "Novice Scholar", icon: <Book className="h-8 w-8" /> },
-                { name: "Skilled Apprentice", icon: <Sword className="h-8 w-8" /> },
-                { name: "Knowledge Knight", icon: <Shield className="h-8 w-8" /> },
-                { name: "Wisdom Baron", icon: <Crown className="h-8 w-8" /> },
-                { name: "Grand Master", icon: <Trophy className="h-8 w-8" /> },
-              ].map((badge, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center p-6 bg-stone-800/90 border-2 border-stone-700 rounded-lg shadow-lg hover:shadow-xl transition-shadow text-center"
-                >
-                  <div className="p-4 rounded-full bg-amber-500/20 text-amber-400 mb-4 relative">
-                    {badge.icon}
-                    <Sparkles className="h-4 w-4 absolute top-0 right-0 text-amber-300" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-amber-200">{badge.name}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
-        {/* FAQ Section */}
         <section className="py-20 bg-stone-900/60 backdrop-blur-sm border-y border-stone-700">
           <div className="container mx-auto px-4">
             <div className="mb-12 text-center">
@@ -415,7 +190,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="max-w-3xl mx-auto">
+            <div className="max-w-3xl mx-auto pb-10">
               <Accordion type="single" collapsible className="space-y-4">
                 {[
                   {
@@ -457,22 +232,9 @@ export default async function Home() {
                 ))}
               </Accordion>
             </div>
-
-            <div className="mt-12 text-center">
-              <p className="text-stone-300 mb-4">Still have questions? We're here to help!</p>
-              <Link href="/contact">
-                <Button
-                  variant="outline"
-                  className="border-amber-500 bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-white font-semibold"
-                >
-                  Contact Support
-                </Button>
-              </Link>
-            </div>
           </div>
         </section>
-
-        {/* Castle Door CTA Section */}
+        
         <section className="py-24 relative castle-door">
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60"></div>
           <div className="container mx-auto px-4 text-center relative">
@@ -482,105 +244,15 @@ export default async function Home() {
                 Share your wisdom with eager learners across the realm. Create courses and build your legacy.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="btn-medieval px-8 py-6 text-lg">Start Teaching</Button>
-                <Button
-                  variant="outline"
-                  className="border-amber-400 bg-stone-800/50 text-amber-300 hover:bg-stone-800 hover:text-amber-200 px-8 py-6 text-lg font-semibold"
-                >
-                  Learn More
-                </Button>
+                <Link href="/courses/publish">
+                  <Button className="btn-medieval px-8 py-6 text-lg">Start Teaching</Button>
+                </Link>
               </div>
             </div>
           </div>
         </section>
       </main>
-
-      <footer className="bg-stone-900/90 backdrop-blur-sm text-stone-400 py-12 border-t border-stone-700">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Image
-                  src="/images/amber-castle.png"
-                  alt="Castle Icon"
-                  width={24}
-                  height={24}
-                  className="h-6 w-6"
-                />
-                <span className="text-lg font-bold text-amber-300 pixel-text">CourseCastle</span>
-              </div>
-              <p className="mb-4">Empowering learners with knowledge since the digital middle ages.</p>
-            </div>
-
-            <div>
-              <h3 className="text-amber-300 font-semibold mb-4">Explore</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/courses" className="hover:text-amber-400 transition-colors">
-                    All Courses
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/instructors" className="hover:text-amber-400 transition-colors">
-                    Instructors
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pricing" className="hover:text-amber-400 transition-colors">
-                    Pricing
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-amber-300 font-semibold mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/about" className="hover:text-amber-400 transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/careers" className="hover:text-amber-400 transition-colors">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-amber-400 transition-colors">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-amber-300 font-semibold mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/terms" className="hover:text-amber-400 transition-colors">
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-amber-400 transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cookies" className="hover:text-amber-400 transition-colors">
-                    Cookie Policy
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-stone-700 mt-8 pt-8 text-center">
-            <p>&copy; {new Date().getFullYear()} CourseCastle. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   )
 }

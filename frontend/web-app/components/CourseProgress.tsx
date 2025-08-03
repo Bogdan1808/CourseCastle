@@ -11,6 +11,7 @@ type Props = {
 export default function CourseProgress({ courseId, status, className = '' }: Props) {
     const getStatusInfo = () => {
         switch (status) {
+            case 'Finished':
             case 'Completed':
                 return {
                     icon: <CheckCircle className="w-5 h-5 text-green-400" />,
@@ -18,6 +19,7 @@ export default function CourseProgress({ courseId, status, className = '' }: Pro
                     bgColor: 'bg-green-400/10 border-green-400/20',
                     textColor: 'text-green-400'
                 };
+            case 'Started':
             case 'InProgress':
                 return {
                     icon: <Play className="w-5 h-5 text-amber-400" />,

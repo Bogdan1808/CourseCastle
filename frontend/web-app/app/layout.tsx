@@ -4,9 +4,8 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "next-auth/react"
-import { Toaster } from "react-hot-toast"
 import ToasterProvider from "./providers/ToasterProvider"
-import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
